@@ -800,11 +800,22 @@ class _CreateUserModalState extends State<_CreateUserModal> {
                 ElevatedButton(
                   onPressed: () {
                     if (_nameCtrl.text.trim().isNotEmpty) {
+                      String finalPassword;
+                      final manualPassword = _passwordCtrl.text.trim();
+
+                      if (manualPassword.isNotEmpty) {
+                        finalPassword = manualPassword;
+                      } else if (!_disableGenerator) {
+                        finalPassword = PasswordGenerator.generate(length: 16);
+                      } else {
+                        finalPassword = 'Imh@2026!Secured';
+                      }
+
                       final newUser = UserModel(
                         id: 'USR-${DateTime.now().millisecondsSinceEpoch.toString().substring(6)}',
                         name: _nameCtrl.text.trim(),
                         email: _emailCtrl.text.trim(),
-                        password: _passwordCtrl.text.isNotEmpty ? _passwordCtrl.text : 'Imh@2026!Secured',
+                        password: finalPassword,
                         entityCode: _entityCtrl.text.trim().toUpperCase(),
                         permissions: UserPermission.standardUserPermissions,
                       );
@@ -943,16 +954,31 @@ class _ChangePasswordModalState extends State<_ChangePasswordModal> {
                 const SizedBox(width: 12),
                 ElevatedButton(
                   onPressed: () {
-                    if (_passwordCtrl.text.trim().isNotEmpty) {
-                      final updated = widget.user.copyWith(password: _passwordCtrl.text.trim());
-                      context.read<UserBloc>().add(AddUser(updated));
-                      Navigator.of(context).pop();
+                    final manualPassword = _passwordCtrl.text.trim();
+                    String finalPassword;
+
+                    if (manualPassword.isNotEmpty) {
+                      finalPassword = manualPassword;
+                    } else if (!_disableGenerator) {
+                      finalPassword = PasswordGenerator.generate(length: 16);
+                    } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text(isArabic ? 'تم حفظ كلمة المرور بنجاح!' : 'Password created & saved successfully!'),
+                          content: Text(isArabic ? 'يرجى إدخال كلمة المرور يدويًا!' : 'Please type a password manually!'),
+                          backgroundColor: AppColors.error,
                         ),
                       );
+                      return;
                     }
+
+                    final updated = widget.user.copyWith(password: finalPassword);
+                    context.read<UserBloc>().add(AddUser(updated));
+                    Navigator.of(context).pop();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(isArabic ? 'تم حفظ كلمة المرور بنجاح! 🔑' : 'Password saved successfully! 🔑'),
+                      ),
+                    );
                   },
                   style: ElevatedButton.styleFrom(backgroundColor: AppColors.primary),
                   child: Text(isArabic ? 'حفظ كلمة المرور' : 'Save Password', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),

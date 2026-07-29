@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'user_event.dart';
 import 'user_state.dart';
 import '../../models/user_model.dart';
+import '../../../core/services/firebase_service.dart';
 
 class UserBloc extends Bloc<UserEvent, UserState> {
   UserBloc() : super(UserInitial()) {
@@ -18,6 +19,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       name: 'Eng. Emad',
       email: 'emad@imh-solutions.com',
       entityCode: 'EM',
+      password: 'Imh@2026!Secured',
       permissions: UserPermission.adminPermissions,
     );
 
@@ -26,6 +28,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       name: 'Eng. Mostafa',
       email: 'mostafa@imh-solutions.com',
       entityCode: 'MO',
+      password: 'Imh@2026!Secured',
       permissions: UserPermission.adminPermissions,
     );
 
@@ -34,6 +37,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       name: 'Eng. Badawy',
       email: 'badawy@imh-solutions.com',
       entityCode: 'BD',
+      password: 'Imh@2026!Secured',
       permissions: UserPermission.adminPermissions,
     );
 
@@ -42,6 +46,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       name: 'Hanafy',
       email: 'hanafy@imh-solutions.com',
       entityCode: 'HN',
+      password: 'Imh@2026!Secured',
       permissions: UserPermission.standardUserPermissions,
     );
 
@@ -65,8 +70,27 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   void _onAddUser(AddUser event, Emitter<UserState> emit) {
     if (state is UserLoaded) {
       final currentState = state as UserLoaded;
-      final updated = List<UserModel>.from(currentState.users)..add(event.user);
-      emit(currentState.copyWith(users: updated));
+      final existingIndex = currentState.users.indexWhere((u) => u.id == event.user.id);
+
+      List<UserModel> updatedUsers;
+      if (existingIndex >= 0) {
+        updatedUsers = List<UserModel>.from(currentState.users);
+        updatedUsers[existingIndex] = event.user;
+      } else {
+        updatedUsers = List<UserModel>.from(currentState.users)..add(event.user);
+      }
+
+      final updatedActive = (currentState.activeUser.id == event.user.id)
+          ? event.user
+          : currentState.activeUser;
+
+      emit(currentState.copyWith(
+        users: updatedUsers,
+        activeUser: updatedActive,
+      ));
+
+      // Firebase sync
+      FirebaseService.instance.saveUser(event.user);
     }
   }
 
