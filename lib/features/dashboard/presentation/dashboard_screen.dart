@@ -18,6 +18,8 @@ class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isArabic = context.watch<LocaleCubit>().isArabic;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isMobile = screenWidth < 900;
 
     return BlocBuilder<TransactionBloc, TransactionState>(
       builder: (context, state) {
@@ -48,246 +50,120 @@ class DashboardScreen extends StatelessWidget {
           final top5Projects = sortedProjects.take(5).toList();
 
           return SingleChildScrollView(
-            padding: const EdgeInsets.all(24),
+            padding: EdgeInsets.all(isMobile ? 12 : 24),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // KPI Cards Grid (Desktop Responsive Row)
-                Row(
-                  children: [
-                    Expanded(
-                      child: KpiCard(
+                // KPI Cards Grid (Desktop Row or Mobile Column/Wrap)
+                if (!isMobile)
+                  Row(
+                    children: [
+                      Expanded(
+                        child: KpiCard(
+                          title: AppTranslations.get('egpBalance', isArabic),
+                          value: CurrencyFormatter.format(totalEgp, Currency.EGP),
+                          subtitle: isArabic ? 'الخزينة الرئيسية للتشغيل' : 'Primary Operating Treasury',
+                          icon: Icons.account_balance,
+                          accentColor: AppColors.egp,
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: KpiCard(
+                          title: AppTranslations.get('eurBalance', isArabic),
+                          value: CurrencyFormatter.format(totalEur, Currency.EUR),
+                          subtitle: isArabic ? 'مشاريع سيمنس والواردات' : 'EU Imports & Siemens Projects',
+                          icon: Icons.euro_rounded,
+                          accentColor: AppColors.eur,
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: KpiCard(
+                          title: AppTranslations.get('usdBalance', isArabic),
+                          value: CurrencyFormatter.format(totalUsd, Currency.USD),
+                          subtitle: isArabic ? 'العقود الدولية والشحن' : 'International Contracts & Freight',
+                          icon: Icons.monetization_on_rounded,
+                          accentColor: AppColors.usd,
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: KpiCard(
+                          title: AppTranslations.get('activeProjects', isArabic),
+                          value: isArabic ? '7 مشاريع' : '7 Projects',
+                          subtitle: isArabic ? 'سيمنس، السنغال، والمزيد' : 'Siemens UAE, FCB Senegal, etc.',
+                          icon: Icons.engineering_rounded,
+                          accentColor: AppColors.secondary,
+                        ),
+                      ),
+                    ],
+                  )
+                else
+                  Column(
+                    children: [
+                      KpiCard(
                         title: AppTranslations.get('egpBalance', isArabic),
                         value: CurrencyFormatter.format(totalEgp, Currency.EGP),
                         subtitle: isArabic ? 'الخزينة الرئيسية للتشغيل' : 'Primary Operating Treasury',
                         icon: Icons.account_balance,
                         accentColor: AppColors.egp,
                       ),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: KpiCard(
+                      const SizedBox(height: 12),
+                      KpiCard(
                         title: AppTranslations.get('eurBalance', isArabic),
                         value: CurrencyFormatter.format(totalEur, Currency.EUR),
                         subtitle: isArabic ? 'مشاريع سيمنس والواردات' : 'EU Imports & Siemens Projects',
                         icon: Icons.euro_rounded,
                         accentColor: AppColors.eur,
                       ),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: KpiCard(
+                      const SizedBox(height: 12),
+                      KpiCard(
                         title: AppTranslations.get('usdBalance', isArabic),
                         value: CurrencyFormatter.format(totalUsd, Currency.USD),
                         subtitle: isArabic ? 'العقود الدولية والشحن' : 'International Contracts & Freight',
                         icon: Icons.monetization_on_rounded,
                         accentColor: AppColors.usd,
                       ),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: KpiCard(
+                      const SizedBox(height: 12),
+                      KpiCard(
                         title: AppTranslations.get('activeProjects', isArabic),
                         value: isArabic ? '7 مشاريع' : '7 Projects',
                         subtitle: isArabic ? 'سيمنس، السنغال، والمزيد' : 'Siemens UAE, FCB Senegal, etc.',
                         icon: Icons.engineering_rounded,
                         accentColor: AppColors.secondary,
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
 
                 const SizedBox(height: 24),
 
                 // Visualizations Section (Charts)
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Pie Chart - Expense Breakdown by Category
-                    Expanded(
-                      flex: 5,
-                      child: Container(
-                        height: 380,
-                        padding: const EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                          color: AppColors.surface,
-                          borderRadius: BorderRadius.circular(14),
-                          border: Border.all(color: AppColors.divider),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  AppTranslations.get('expenseDist', isArabic),
-                                  style: const TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold,
-                                    letterSpacing: 0.8,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                const Icon(Icons.pie_chart_outline_rounded, color: AppColors.secondary, size: 20),
-                              ],
-                            ),
-                            const SizedBox(height: 20),
-                            Expanded(
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    flex: 3,
-                                    child: PieChart(
-                                      PieChartData(
-                                        sectionsSpace: 4,
-                                        centerSpaceRadius: 50,
-                                        sections: _generatePieSections(categoryEgpMap),
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 16),
-                                  Expanded(
-                                    flex: 2,
-                                    child: ListView(
-                                      children: categoryEgpMap.entries.take(6).map((entry) {
-                                        return Padding(
-                                          padding: const EdgeInsets.symmetric(vertical: 4),
-                                          child: Row(
-                                            children: [
-                                              Container(
-                                                width: 10,
-                                                height: 10,
-                                                decoration: BoxDecoration(
-                                                  color: _getCategoryColor(entry.key),
-                                                  shape: BoxShape.circle,
-                                                ),
-                                              ),
-                                              const SizedBox(width: 8),
-                                              Expanded(
-                                                child: Text(
-                                                  AppCategories.getLocalizedName(entry.key, isArabic),
-                                                  style: const TextStyle(fontSize: 11, color: AppColors.textLight),
-                                                  overflow: TextOverflow.ellipsis,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        );
-                                      }).toList(),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
+                if (!isMobile)
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Pie Chart - Expense Breakdown by Category
+                      Expanded(
+                        flex: 5,
+                        child: _buildPieChartCard(categoryEgpMap, isArabic),
                       ),
-                    ),
-
-                    const SizedBox(width: 20),
-
-                    // Top 5 Most Expensive Engineering Projects
-                    Expanded(
-                      flex: 4,
-                      child: Container(
-                        height: 380,
-                        padding: const EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                          color: AppColors.surface,
-                          borderRadius: BorderRadius.circular(14),
-                          border: Border.all(color: AppColors.divider),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  AppTranslations.get('topProjects', isArabic),
-                                  style: const TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold,
-                                    letterSpacing: 0.8,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                const Icon(Icons.leaderboard_rounded, color: AppColors.usd, size: 20),
-                              ],
-                            ),
-                            const SizedBox(height: 16),
-                            Expanded(
-                              child: ListView.separated(
-                                itemCount: top5Projects.length,
-                                separatorBuilder: (_, _) => const Divider(color: AppColors.divider, height: 16),
-                                itemBuilder: (context, idx) {
-                                  final proj = top5Projects[idx];
-                                  return Row(
-                                    children: [
-                                      Container(
-                                        padding: const EdgeInsets.all(8),
-                                        decoration: BoxDecoration(
-                                          color: AppColors.primary.withValues(alpha: 0.15),
-                                          borderRadius: BorderRadius.circular(8),
-                                        ),
-                                        child: Text(
-                                          '#${idx + 1}',
-                                          style: const TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.bold,
-                                            color: AppColors.primaryLight,
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(width: 12),
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              proj.key,
-                                              style: const TextStyle(
-                                                fontSize: 13,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white,
-                                              ),
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                            const SizedBox(height: 2),
-                                            Text(
-                                              isArabic ? 'خدمات هندسية وأتمتة' : 'Automation & Engineering Services',
-                                              style: const TextStyle(fontSize: 11, color: AppColors.textSecondary),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.end,
-                                        children: [
-                                          Text(
-                                            CurrencyFormatter.format(proj.value, Currency.EGP),
-                                            style: const TextStyle(
-                                              fontSize: 13,
-                                              fontWeight: FontWeight.bold,
-                                              color: AppColors.egp,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 2),
-                                          StatusBadge(text: isArabic ? 'نشط' : 'Active', color: AppColors.success),
-                                        ],
-                                      ),
-                                    ],
-                                  );
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
+                      const SizedBox(width: 20),
+                      // Top 5 Most Expensive Engineering Projects
+                      Expanded(
+                        flex: 4,
+                        child: _buildTopProjectsCard(top5Projects, isArabic),
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  )
+                else
+                  Column(
+                    children: [
+                      _buildPieChartCard(categoryEgpMap, isArabic),
+                      const SizedBox(height: 16),
+                      _buildTopProjectsCard(top5Projects, isArabic),
+                    ],
+                  ),
 
                 const SizedBox(height: 24),
 
@@ -373,6 +249,184 @@ class DashboardScreen extends StatelessWidget {
 
         return const SizedBox.shrink();
       },
+    );
+  }
+
+  Widget _buildPieChartCard(Map<String, double> categoryEgpMap, bool isArabic) {
+    return Container(
+      height: 380,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: AppColors.divider),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                AppTranslations.get('expenseDist', isArabic),
+                style: const TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 0.8,
+                  color: Colors.white,
+                ),
+              ),
+              const Icon(Icons.pie_chart_outline_rounded, color: AppColors.secondary, size: 20),
+            ],
+          ),
+          const SizedBox(height: 20),
+          Expanded(
+            child: Row(
+              children: [
+                Expanded(
+                  flex: 3,
+                  child: PieChart(
+                    PieChartData(
+                      sectionsSpace: 4,
+                      centerSpaceRadius: 50,
+                      sections: _generatePieSections(categoryEgpMap),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  flex: 2,
+                  child: ListView(
+                    children: categoryEgpMap.entries.take(6).map((entry) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 4),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 10,
+                              height: 10,
+                              decoration: BoxDecoration(
+                                color: _getCategoryColor(entry.key),
+                                shape: BoxShape.circle,
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: Text(
+                                AppCategories.getLocalizedName(entry.key, isArabic),
+                                style: const TextStyle(fontSize: 11, color: AppColors.textLight),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTopProjectsCard(List<MapEntry<String, double>> top5Projects, bool isArabic) {
+    return Container(
+      height: 380,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: AppColors.divider),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                AppTranslations.get('topProjects', isArabic),
+                style: const TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 0.8,
+                  color: Colors.white,
+                ),
+              ),
+              const Icon(Icons.leaderboard_rounded, color: AppColors.usd, size: 20),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Expanded(
+            child: ListView.separated(
+              itemCount: top5Projects.length,
+              separatorBuilder: (_, _) => const Divider(color: AppColors.divider, height: 16),
+              itemBuilder: (context, idx) {
+                final proj = top5Projects[idx];
+                return Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: AppColors.primary.withValues(alpha: 0.15),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Text(
+                        '#${idx + 1}',
+                        style: const TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.primaryLight,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            proj.key,
+                            style: const TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            isArabic ? 'خدمات هندسية وأتمتة' : 'Automation & Engineering Services',
+                            style: const TextStyle(fontSize: 11, color: AppColors.textSecondary),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          CurrencyFormatter.format(proj.value, Currency.EGP),
+                          style: const TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.egp,
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        StatusBadge(text: isArabic ? 'نشط' : 'Active', color: AppColors.success),
+                      ],
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 

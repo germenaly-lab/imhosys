@@ -17,6 +17,10 @@ class AccountsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final accounts = AppAccounts.accounts;
 
+    final screenWidth = MediaQuery.of(context).size.width;
+    final crossAxisCount = screenWidth < 700 ? 1 : (screenWidth < 1100 ? 2 : 3);
+    final aspectRatio = screenWidth < 700 ? 1.3 : 1.5;
+
     return BlocBuilder<TransactionBloc, TransactionState>(
       builder: (context, state) {
         if (state is! TransactionLoaded) {
@@ -26,31 +30,33 @@ class AccountsScreen extends StatelessWidget {
         final transactions = state.allTransactions;
 
         return SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
+          padding: EdgeInsets.all(screenWidth < 700 ? 12 : 24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'TREASURY, BANK ACCOUNTS & SUB-ACCOUNTS',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w900,
-                          letterSpacing: 0.8,
-                          color: Colors.white,
+                  const Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'TREASURY, BANK ACCOUNTS & SUB-ACCOUNTS',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w900,
+                            letterSpacing: 0.8,
+                            color: Colors.white,
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 4),
-                      Text(
-                        'Monitor cash vaults, bank liquidity, and responsible sub-account entities (BS, MR, ES, MF)',
-                        style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
-                      ),
-                    ],
+                        SizedBox(height: 4),
+                        Text(
+                          'Monitor cash vaults, bank liquidity, and responsible sub-account entities (BS, MR, ES, MF)',
+                          style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
+                        ),
+                      ],
+                    ),
                   ),
                   ElevatedButton.icon(
                     onPressed: () => _openTransferDialog(context),
@@ -58,7 +64,7 @@ class AccountsScreen extends StatelessWidget {
                     label: const Text('Internal Transfer', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.secondary,
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                     ),
                   ),
@@ -71,11 +77,11 @@ class AccountsScreen extends StatelessWidget {
               GridView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: crossAxisCount,
                   crossAxisSpacing: 16,
                   mainAxisSpacing: 16,
-                  childAspectRatio: 1.5,
+                  childAspectRatio: aspectRatio,
                 ),
                 itemCount: accounts.length,
                 itemBuilder: (context, index) {

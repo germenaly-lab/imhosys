@@ -56,6 +56,9 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
 
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isMobile = screenWidth < 500;
+
     return Directionality(
       textDirection: isArabic ? TextDirection.rtl : TextDirection.ltr,
       child: Scaffold(
@@ -91,13 +94,13 @@ class _LoginScreenState extends State<LoginScreen> {
             // Main Login Container
             Center(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
+                padding: EdgeInsets.symmetric(horizontal: isMobile ? 16 : 24, vertical: 40),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     // Official Company Logo in Center
-                    const CompanyLogo(
-                      size: 96,
+                    CompanyLogo(
+                      size: isMobile ? 76 : 96,
                       showText: true,
                     ),
 
@@ -105,8 +108,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     // Neat Rectangle Container containing Password & Credentials
                     Container(
-                      width: 420,
-                      padding: const EdgeInsets.all(28),
+                      width: isMobile ? double.infinity : 420,
+                      padding: EdgeInsets.all(isMobile ? 20 : 28),
                       decoration: BoxDecoration(
                         color: AppColors.surface,
                         borderRadius: BorderRadius.circular(16),

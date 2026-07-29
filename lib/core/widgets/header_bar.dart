@@ -11,6 +11,8 @@ import 'language_switch_button.dart';
 class HeaderBar extends StatelessWidget {
   final String titleKey;
   final String? title;
+  final bool isMobile;
+  final VoidCallback? onOpenDrawer;
   final Function(String) onSearch;
   final VoidCallback onAddTransaction;
   final VoidCallback onImportExcel;
@@ -20,6 +22,8 @@ class HeaderBar extends StatelessWidget {
     super.key,
     this.titleKey = 'dashHeader',
     this.title,
+    this.isMobile = false,
+    this.onOpenDrawer,
     required this.onSearch,
     required this.onAddTransaction,
     required this.onImportExcel,
@@ -37,7 +41,7 @@ class HeaderBar extends StatelessWidget {
     final displayTitle = title ?? AppTranslations.get(titleKey, isArabic);
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+      padding: EdgeInsets.symmetric(horizontal: isMobile ? 12 : 24, vertical: 10),
       decoration: const BoxDecoration(
         color: AppColors.surface,
         border: Border(
@@ -48,23 +52,32 @@ class HeaderBar extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         child: Row(
           children: [
+            if (isMobile && onOpenDrawer != null) ...[
+              IconButton(
+                icon: const Icon(Icons.menu_rounded, color: Colors.white, size: 24),
+                onPressed: onOpenDrawer,
+                tooltip: isArabic ? 'القائمة' : 'Menu',
+              ),
+              const SizedBox(width: 6),
+            ],
+
             // Title
             Text(
               displayTitle,
-              style: const TextStyle(
-                fontSize: 17,
+              style: TextStyle(
+                fontSize: isMobile ? 14 : 17,
                 fontWeight: FontWeight.w800,
                 color: Colors.white,
                 letterSpacing: -0.3,
               ),
             ),
 
-            const SizedBox(width: 16),
+            const SizedBox(width: 12),
 
             // Active Profile Switcher Dropdown
             if (activeUser != null)
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                 decoration: BoxDecoration(
                   color: AppColors.primary.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(20),
@@ -107,12 +120,12 @@ class HeaderBar extends StatelessWidget {
                 ),
               ),
 
-            const SizedBox(width: 16),
+            const SizedBox(width: 12),
 
             // Search Bar
             SizedBox(
-              width: 240,
-              height: 38,
+              width: isMobile ? 160 : 240,
+              height: 36,
               child: TextField(
                 onChanged: onSearch,
                 style: const TextStyle(fontSize: 12, color: Colors.white),
@@ -121,7 +134,7 @@ class HeaderBar extends StatelessWidget {
                   prefixIcon: const Icon(Icons.search, size: 16, color: AppColors.textSecondary),
                   filled: true,
                   fillColor: AppColors.background,
-                  contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 14),
+                  contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                     borderSide: const BorderSide(color: AppColors.divider),
@@ -130,12 +143,12 @@ class HeaderBar extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(width: 12),
+            const SizedBox(width: 10),
 
             // Language Switcher Toggle Button
             const LanguageSwitchButton(),
 
-            const SizedBox(width: 12),
+            const SizedBox(width: 10),
 
             // Action Buttons
             if (activeUser == null || activeUser.permissions.canImportExportExcel)
@@ -148,7 +161,7 @@ class HeaderBar extends StatelessWidget {
                 ),
                 style: OutlinedButton.styleFrom(
                   side: const BorderSide(color: AppColors.secondary),
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                 ),
               ),
@@ -165,7 +178,7 @@ class HeaderBar extends StatelessWidget {
                 ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
-                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                   elevation: 4,
                   shadowColor: AppColors.primary.withValues(alpha: 0.4),
@@ -173,7 +186,7 @@ class HeaderBar extends StatelessWidget {
               ),
 
             if (onLogout != null) ...[
-              const SizedBox(width: 12),
+              const SizedBox(width: 8),
               IconButton(
                 tooltip: isArabic ? 'تسجيل الخروج' : 'Log Out',
                 icon: const Icon(Icons.logout_rounded, color: AppColors.error, size: 20),

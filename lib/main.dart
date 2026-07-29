@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'core/theme/app_theme.dart';
+import 'core/constants/app_colors.dart';
 import 'core/localization/locale_cubit.dart';
 import 'core/widgets/custom_sidebar.dart';
 import 'core/widgets/header_bar.dart';
@@ -120,39 +121,108 @@ class _MainShellScreenState extends State<MainShellScreen> {
   @override
   Widget build(BuildContext context) {
     final isArabic = context.watch<LocaleCubit>().isArabic;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isMobile = screenWidth < 900;
 
     return Directionality(
       textDirection: isArabic ? TextDirection.rtl : TextDirection.ltr,
       child: Scaffold(
+        drawer: isMobile
+            ? Drawer(
+                backgroundColor: AppColors.surface,
+                child: CustomSidebar(
+                  selectedIndex: _currentNavIndex,
+                  onItemSelected: (index) {
+                    setState(() {
+                      _currentNavIndex = index;
+                    });
+                    Navigator.of(context).pop();
+                  },
+                ),
+              )
+            : null,
+        bottomNavigationBar: isMobile
+            ? Container(
+                decoration: const BoxDecoration(
+                  color: AppColors.surface,
+                  border: Border(top: BorderSide(color: AppColors.divider, width: 1)),
+                ),
+                child: BottomNavigationBar(
+                  currentIndex: _currentNavIndex > 5 ? 0 : _currentNavIndex,
+                  onTap: (index) {
+                    setState(() {
+                      _currentNavIndex = index;
+                    });
+                  },
+                  backgroundColor: AppColors.surface,
+                  selectedItemColor: AppColors.primaryLight,
+                  unselectedItemColor: AppColors.textSecondary,
+                  type: BottomNavigationBarType.fixed,
+                  selectedFontSize: 11,
+                  unselectedFontSize: 10,
+                  items: [
+                    BottomNavigationBarItem(
+                      icon: const Icon(Icons.dashboard_rounded),
+                      label: isArabic ? 'الرئيسية' : 'Dashboard',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: const Icon(Icons.table_rows_rounded),
+                      label: isArabic ? 'السجل' : 'Ledger',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: const Icon(Icons.engineering_rounded),
+                      label: isArabic ? 'المشاريع' : 'Projects',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: const Icon(Icons.account_balance_wallet_rounded),
+                      label: isArabic ? 'الخزينة' : 'Accounts',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: const Icon(Icons.file_present_rounded),
+                      label: isArabic ? 'إكسيل' : 'Excel',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: const Icon(Icons.admin_panel_settings_rounded),
+                      label: isArabic ? 'الأدوار' : 'Users',
+                    ),
+                  ],
+                ),
+              )
+            : null,
         body: Row(
           children: [
             // Persistent Desktop Navigation Sidebar
-            CustomSidebar(
-              selectedIndex: _currentNavIndex,
-              onItemSelected: (index) {
-                setState(() {
-                  _currentNavIndex = index;
-                });
-              },
-            ),
+            if (!isMobile)
+              CustomSidebar(
+                selectedIndex: _currentNavIndex,
+                onItemSelected: (index) {
+                  setState(() {
+                    _currentNavIndex = index;
+                  });
+                },
+              ),
 
             // Main Screen Content Body
             Expanded(
               child: Column(
                 children: [
                   // Top Header Bar
-                  HeaderBar(
-                    titleKey: _pageTitleKeys[_currentNavIndex],
-                    onSearch: (query) {
-                      context.read<TransactionBloc>().add(SearchTransactions(query));
-                    },
-                    onAddTransaction: () => _openNewTransactionDialog(context),
-                    onImportExcel: () {
-                      setState(() {
-                        _currentNavIndex = 4; // Switch to Excel Tool Tab
-                      });
-                    },
-                    onLogout: widget.onLogout,
+                  Builder(
+                    builder: (headerCtx) => HeaderBar(
+                      titleKey: _pageTitleKeys[_currentNavIndex],
+                      isMobile: isMobile,
+                      onOpenDrawer: isMobile ? () => Scaffold.of(headerCtx).openDrawer() : null,
+                      onSearch: (query) {
+                        context.read<TransactionBloc>().add(SearchTransactions(query));
+                      },
+                      onAddTransaction: () => _openNewTransactionDialog(context),
+                      onImportExcel: () {
+                        setState(() {
+                          _currentNavIndex = 4; // Switch to Excel Tool Tab
+                        });
+                      },
+                      onLogout: widget.onLogout,
+                    ),
                   ),
 
                   // Active Tab Body View

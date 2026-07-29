@@ -27,6 +27,10 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
     final isArabic = context.watch<LocaleCubit>().isArabic;
     final projects = AppProjects.defaultProjects;
 
+    final screenWidth = MediaQuery.of(context).size.width;
+    final crossAxisCount = screenWidth < 700 ? 1 : (screenWidth < 1100 ? 2 : 3);
+    final aspectRatio = screenWidth < 700 ? 1.25 : 1.45;
+
     return BlocBuilder<TransactionBloc, TransactionState>(
       builder: (context, state) {
         if (state is! TransactionLoaded) {
@@ -36,7 +40,7 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
         final allTransactions = state.allTransactions;
 
         return SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
+          padding: EdgeInsets.all(screenWidth < 700 ? 12 : 24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -60,11 +64,11 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
               GridView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: crossAxisCount,
                   crossAxisSpacing: 16,
                   mainAxisSpacing: 16,
-                  childAspectRatio: 1.45,
+                  childAspectRatio: aspectRatio,
                 ),
                 itemCount: projects.length,
                 itemBuilder: (context, index) {
