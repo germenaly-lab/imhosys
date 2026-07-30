@@ -19,6 +19,7 @@ import 'features/excel_tool/presentation/excel_import_export_screen.dart';
 import 'features/users/presentation/users_screen.dart';
 import 'features/transactions/presentation/widgets/transaction_dialog.dart';
 import 'core/services/firebase_service.dart';
+import 'core/theme/theme_cubit.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,26 +35,33 @@ class ImhErpApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => LocaleCubit()),
+        BlocProvider(create: (context) => ThemeCubit()),
         BlocProvider(create: (context) => UserBloc()..add(LoadUsers())),
         BlocProvider(create: (context) => TransactionBloc()..add(LoadTransactions())),
       ],
-      child: BlocBuilder<LocaleCubit, Locale>(
-        builder: (context, locale) {
-          return MaterialApp(
-            title: 'IMHOSYS - Enterprise ERP & Ledger',
-            debugShowCheckedModeBanner: false,
-            theme: AppTheme.lightTheme,
-            locale: locale,
-            supportedLocales: const [
-              Locale('en'),
-              Locale('ar'),
-            ],
-            localizationsDelegates: const [
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            home: const RootAuthWrapper(),
+      child: BlocBuilder<ThemeCubit, ThemeMode>(
+        builder: (context, themeMode) {
+          return BlocBuilder<LocaleCubit, Locale>(
+            builder: (context, locale) {
+              return MaterialApp(
+                title: 'IMHOSYS - Enterprise ERP & Ledger',
+                debugShowCheckedModeBanner: false,
+                theme: AppTheme.lightTheme,
+                darkTheme: AppTheme.darkTheme,
+                themeMode: themeMode,
+                locale: locale,
+                supportedLocales: const [
+                  Locale('en'),
+                  Locale('ar'),
+                ],
+                localizationsDelegates: const [
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                ],
+                home: const RootAuthWrapper(),
+              );
+            },
           );
         },
       ),

@@ -684,6 +684,7 @@ class _CreateUserModalState extends State<_CreateUserModal> {
   final _entityCtrl = TextEditingController(text: 'ES');
   bool _obscurePassword = true;
   bool _disableGenerator = false;
+  bool _isAdmin = false;
 
   @override
   void initState() {
@@ -693,6 +694,7 @@ class _CreateUserModalState extends State<_CreateUserModal> {
   @override
   Widget build(BuildContext context) {
     final isArabic = context.watch<LocaleCubit>().isArabic;
+    final textColor = Theme.of(context).colorScheme.onSurface;
 
     return Dialog(
       backgroundColor: AppColors.surface,
@@ -709,21 +711,50 @@ class _CreateUserModalState extends State<_CreateUserModal> {
                 const SizedBox(width: 10),
                 Text(
                   isArabic ? 'إنشاء حساب جديد' : 'Create New Account',
-                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: textColor),
                 ),
               ],
             ),
             const Divider(color: AppColors.divider, height: 28),
             TextField(
               controller: _nameCtrl,
-              style: const TextStyle(color: Colors.white),
+              style: TextStyle(color: textColor),
               decoration: InputDecoration(labelText: isArabic ? 'الاسم الكامل *' : 'Full Name *'),
             ),
             const SizedBox(height: 14),
             TextField(
               controller: _emailCtrl,
-              style: const TextStyle(color: Colors.white),
+              style: TextStyle(color: textColor),
               decoration: InputDecoration(labelText: isArabic ? 'البريد الإلكتروني *' : 'Email Address *'),
+            ),
+            const SizedBox(height: 14),
+
+            // Permission Level Selection Dropdown
+            DropdownButtonFormField<bool>(
+              initialValue: _isAdmin,
+              dropdownColor: AppColors.surface,
+              style: TextStyle(color: textColor, fontSize: 13),
+              decoration: InputDecoration(
+                labelText: isArabic ? 'نوع حساب التخويل والصلاحيات *' : 'Permission Level & Role *',
+                prefixIcon: Icon(_isAdmin ? Icons.admin_panel_settings_rounded : Icons.person_outline_rounded, color: _isAdmin ? AppColors.primary : AppColors.secondary, size: 20),
+              ),
+              items: [
+                DropdownMenuItem(
+                  value: false,
+                  child: Text(isArabic ? 'مستخدم عادي (إضافة وعرض فقط)' : 'Standard User (View & Add Entry Only)'),
+                ),
+                DropdownMenuItem(
+                  value: true,
+                  child: Text(isArabic ? 'مسؤول نظام (صلاحيات كاملة - Admin)' : 'Administrator (Full Access & Management)'),
+                ),
+              ],
+              onChanged: (val) {
+                if (val != null) {
+                  setState(() {
+                    _isAdmin = val;
+                  });
+                }
+              },
             ),
             const SizedBox(height: 14),
 
@@ -733,7 +764,7 @@ class _CreateUserModalState extends State<_CreateUserModal> {
               contentPadding: EdgeInsets.zero,
               title: Text(
                 isArabic ? 'تعطيل التوليد التلقائي (إنشاء يدوي)' : 'Disable Auto Generation (Create Manually)',
-                style: const TextStyle(fontSize: 12, color: Colors.white),
+                style: TextStyle(fontSize: 12, color: textColor),
               ),
               value: _disableGenerator,
               activeThumbColor: AppColors.warning,
@@ -753,7 +784,7 @@ class _CreateUserModalState extends State<_CreateUserModal> {
                   child: TextField(
                     controller: _passwordCtrl,
                     obscureText: _obscurePassword,
-                    style: const TextStyle(color: Colors.white),
+                    style: TextStyle(color: textColor),
                     decoration: InputDecoration(
                       labelText: isArabic ? 'كلمة المرور (إنشاء يدوي) *' : 'Create Password (Manual Entry) *',
                       suffixIcon: IconButton(
@@ -785,7 +816,7 @@ class _CreateUserModalState extends State<_CreateUserModal> {
             const SizedBox(height: 14),
             TextField(
               controller: _entityCtrl,
-              style: const TextStyle(color: Colors.white),
+              style: TextStyle(color: textColor),
               decoration: InputDecoration(labelText: isArabic ? 'كود الجهة/الشخص المسؤول (مثال: BS, MR, ES)' : 'Entity Code (e.g. BS, MR, ES)'),
             ),
             const SizedBox(height: 24),
@@ -817,7 +848,7 @@ class _CreateUserModalState extends State<_CreateUserModal> {
                         email: _emailCtrl.text.trim(),
                         password: finalPassword,
                         entityCode: _entityCtrl.text.trim().toUpperCase(),
-                        permissions: UserPermission.standardUserPermissions,
+                        permissions: _isAdmin ? UserPermission.adminPermissions : UserPermission.standardUserPermissions,
                       );
                       context.read<UserBloc>().add(AddUser(newUser));
                       Navigator.of(context).pop();

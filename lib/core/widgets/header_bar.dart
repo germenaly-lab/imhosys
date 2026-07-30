@@ -8,6 +8,8 @@ import '../../features/users/bloc/user_state.dart';
 import '../../features/users/bloc/user_event.dart';
 import 'language_switch_button.dart';
 
+import '../theme/theme_cubit.dart';
+
 class HeaderBar extends StatelessWidget {
   final String titleKey;
   final String? title;
@@ -33,6 +35,7 @@ class HeaderBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isArabic = context.watch<LocaleCubit>().isArabic;
+    final isDarkMode = context.watch<ThemeCubit>().isDarkMode;
     final userState = context.watch<UserBloc>().state;
 
     final activeUser = userState is UserLoaded ? userState.activeUser : null;
@@ -147,6 +150,33 @@ class HeaderBar extends StatelessWidget {
 
             // Language Switcher Toggle Button
             const LanguageSwitchButton(),
+
+            const SizedBox(width: 8),
+
+            // Dark / Light Mode Switcher Toggle Button
+            Container(
+              decoration: BoxDecoration(
+                color: isDarkMode ? AppColors.primary.withValues(alpha: 0.2) : AppColors.primary.withValues(alpha: 0.08),
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(
+                  color: isDarkMode ? AppColors.primaryLight : AppColors.primary.withValues(alpha: 0.3),
+                  width: 1,
+                ),
+              ),
+              child: IconButton(
+                tooltip: isDarkMode
+                    ? (isArabic ? 'التبديل إلى الوضع الفاتح' : 'Switch to Light Mode')
+                    : (isArabic ? 'التبديل إلى الوضع الداكن' : 'Switch to Dark Mode'),
+                icon: Icon(
+                  isDarkMode ? Icons.wb_sunny_rounded : Icons.nightlight_round,
+                  color: isDarkMode ? Colors.amber : AppColors.primary,
+                  size: 18,
+                ),
+                onPressed: () {
+                  context.read<ThemeCubit>().toggleTheme();
+                },
+              ),
+            ),
 
             const SizedBox(width: 10),
 
