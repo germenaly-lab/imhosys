@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../constants/app_colors.dart';
 import '../localization/locale_cubit.dart';
 import '../localization/app_translations.dart';
+import '../../features/users/bloc/user_bloc.dart';
+import '../../features/users/bloc/user_state.dart';
 
 class CustomSidebar extends StatelessWidget {
   final int selectedIndex;
@@ -142,9 +144,20 @@ class CustomSidebar extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 6),
-                Text(
-                  isArabic ? 'الخزائن: جنيه • يورو • دولار' : 'Vaults: EGP • EUR • USD',
-                  style: const TextStyle(fontSize: 10, color: AppColors.textSecondary),
+                Builder(
+                  builder: (context) {
+                    final activeUser = context.watch<UserBloc>().state is UserLoaded
+                        ? (context.watch<UserBloc>().state as UserLoaded).activeUser
+                        : null;
+                    final canViewVaults = activeUser?.permissions.canViewVaultBalances ?? false;
+
+                    return Text(
+                      canViewVaults
+                          ? (isArabic ? 'الخزائن: جنيه • يورو • دولار' : 'Vaults: EGP • EUR • USD')
+                          : (isArabic ? 'أرصدة الخزائن: محمية بحساب المسؤول 🔒' : 'Vault Balances: Admin Protected 🔒'),
+                      style: const TextStyle(fontSize: 10, color: AppColors.textSecondary),
+                    );
+                  },
                 ),
               ],
             ),

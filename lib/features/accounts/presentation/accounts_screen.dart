@@ -5,9 +5,12 @@ import '../../../core/constants/app_accounts.dart';
 import '../../../core/utils/currency_formatter.dart';
 import '../../../core/constants/app_currencies.dart';
 import '../../../core/widgets/status_badge.dart';
+import '../../../core/localization/locale_cubit.dart';
 import '../../transactions/bloc/transaction_bloc.dart';
 import '../../transactions/bloc/transaction_state.dart';
 import '../../transactions/bloc/transaction_event.dart';
+import '../../users/bloc/user_bloc.dart';
+import '../../users/bloc/user_state.dart';
 import '../../models/transaction_model.dart';
 
 class AccountsScreen extends StatelessWidget {
@@ -16,6 +19,7 @@ class AccountsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final accounts = AppAccounts.accounts;
+    final isArabic = context.watch<LocaleCubit>().isArabic;
 
     final screenWidth = MediaQuery.of(context).size.width;
     final crossAxisCount = screenWidth < 700 ? 1 : (screenWidth < 1100 ? 2 : 3);
@@ -28,6 +32,11 @@ class AccountsScreen extends StatelessWidget {
         }
 
         final transactions = state.allTransactions;
+        final activeUser = context.watch<UserBloc>().state is UserLoaded
+            ? (context.watch<UserBloc>().state as UserLoaded).activeUser
+            : null;
+        final canTransfer = activeUser?.permissions.canExecuteTransfer ?? false;
+        final canViewVaults = activeUser?.permissions.canViewVaultBalances ?? false;
 
         return SingleChildScrollView(
           padding: EdgeInsets.all(screenWidth < 700 ? 12 : 24),
@@ -37,7 +46,7 @@ class AccountsScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Expanded(
+                  Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -47,23 +56,39 @@ class AccountsScreen extends StatelessWidget {
                             fontSize: 16,
                             fontWeight: FontWeight.w900,
                             letterSpacing: 0.8,
-                            color: AppColors.textPrimary,
+                            color: AppColors.getTextPrimary(context),
                           ),
                         ),
-                        SizedBox(height: 4),
+                        const SizedBox(height: 4),
                         Text(
                           'Monitor cash vaults, bank liquidity, and responsible sub-account entities (BS, MR, ES, MF)',
-                          style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
+                          style: const TextStyle(fontSize: 12, color: AppColors.textSecondary),
                         ),
                       ],
                     ),
                   ),
                   ElevatedButton.icon(
-                    onPressed: () => _openTransferDialog(context),
-                    icon: const Icon(Icons.swap_horiz_rounded, size: 18, color: Colors.white),
-                    label: const Text('Internal Transfer', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+                    onPressed: canTransfer
+                        ? () => _openTransferDialog(context)
+                        : () {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(isArabic
+                                    ? 'عذراً! إجراء تحويلات الأموال يتطلب صلاحية مسؤول النظام.'
+                                    : 'Restricted Access: Fund transfers require Administrator permissions.'),
+                                backgroundColor: AppColors.error,
+                              ),
+                            );
+                          },
+                    icon: Icon(canTransfer ? Icons.swap_horiz_rounded : Icons.lock_outline_rounded, size: 18, color: Colors.white),
+                    label: Text(
+                      canTransfer
+                          ? (isArabic ? 'تحويل داخلي' : 'Internal Transfer')
+                          : (isArabic ? 'التحويل مقيّد 🔒' : 'Transfer Restricted 🔒'),
+                      style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                    ),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.secondary,
+                      backgroundColor: canTransfer ? AppColors.secondary : AppColors.textSecondary,
                       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                     ),
@@ -153,12 +178,14 @@ class AccountsScreen extends StatelessWidget {
                           children: [
                             const Text('Outflow Total:', style: TextStyle(fontSize: 11, color: AppColors.textSecondary)),
                             Text(
-                              egpSpent > 0
-                                  ? CurrencyFormatter.format(egpSpent, Currency.EGP)
-                                  : eurSpent > 0
-                                      ? CurrencyFormatter.format(eurSpent, Currency.EUR)
-                                      : CurrencyFormatter.format(usdSpent, Currency.USD),
-                              style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: AppColors.secondary),
+                              canViewVaults
+                                  ? (egpSpent > 0
+                                      ? CurrencyFormatter.format(egpSpent, Currency.EGP)
+                                      : eurSpent > 0
+                                          ? CurrencyFormatter.format(eurSpent, Currency.EUR)
+                                          : CurrencyFormatter.format(usdSpent, Currency.USD))
+                                  : '•••••• (Restricted)',
+                              style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: canViewVaults ? AppColors.secondary : AppColors.textSecondary),
                             ),
                           ],
                         ),

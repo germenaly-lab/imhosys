@@ -1069,11 +1069,13 @@ class _EditPermissionsModalState extends State<_EditPermissionsModal> {
 
             // Toggles
             _buildSwitch(isArabic ? 'عرض السجل المالي' : 'Can View Ledger', _perm.canViewLedger, (v) => setState(() => _perm = _perm.copyWith(canViewLedger: v))),
-            _buildSwitch(isArabic ? 'إضافة معاملة جديدة' : 'Can Add Transactions', _perm.canAddTransaction, (v) => setState(() => _perm = _perm.copyWith(canAddTransaction: v))),
+            _buildSwitch(isArabic ? 'إضافة معاملة جديدة (مصروفات)' : 'Can Add Expense Transactions', _perm.canAddTransaction, (v) => setState(() => _perm = _perm.copyWith(canAddTransaction: v))),
             _buildSwitch(isArabic ? 'تعديل المعاملات' : 'Can Edit Transactions', _perm.canEditTransaction, (v) => setState(() => _perm = _perm.copyWith(canEditTransaction: v))),
             _buildSwitch(isArabic ? 'حذف المعاملات' : 'Can Delete Transactions', _perm.canDeleteTransaction, (v) => setState(() => _perm = _perm.copyWith(canDeleteTransaction: v))),
             _buildSwitch(isArabic ? 'استيراد/تصدير ملفات إكسيل' : 'Can Import/Export Excel', _perm.canImportExportExcel, (v) => setState(() => _perm = _perm.copyWith(canImportExportExcel: v))),
             _buildSwitch(isArabic ? 'إجراء التحويلات بين الخزائن' : 'Can Execute Vault Transfers', _perm.canExecuteTransfer, (v) => setState(() => _perm = _perm.copyWith(canExecuteTransfer: v))),
+            _buildSwitch(isArabic ? 'عرض أرصدة الخزائن والبنك (EGP/EUR/USD)' : 'Can View Vault Balances (EGP/EUR/USD)', _perm.canViewVaultBalances, (v) => setState(() => _perm = _perm.copyWith(canViewVaultBalances: v))),
+            _buildSwitch(isArabic ? 'عرض إيرادات ودخل المشاريع' : 'Can View Project Revenues & Income', _perm.canViewProjectRevenues, (v) => setState(() => _perm = _perm.copyWith(canViewProjectRevenues: v))),
             _buildSwitch(isArabic ? 'إدارة المستخدمين' : 'Can Manage Users & Permissions', _perm.canManageUsers, (v) => setState(() => _perm = _perm.copyWith(canManageUsers: v))),
 
             const SizedBox(height: 24),

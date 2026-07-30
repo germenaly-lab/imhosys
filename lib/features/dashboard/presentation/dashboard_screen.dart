@@ -11,6 +11,8 @@ import '../../../core/localization/locale_cubit.dart';
 import '../../../core/localization/app_translations.dart';
 import '../../transactions/bloc/transaction_bloc.dart';
 import '../../transactions/bloc/transaction_state.dart';
+import '../../users/bloc/user_bloc.dart';
+import '../../users/bloc/user_state.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -49,6 +51,15 @@ class DashboardScreen extends StatelessWidget {
           final sortedProjects = projectEgpMap.entries.toList()..sort((a, b) => b.value.compareTo(a.value));
           final top5Projects = sortedProjects.take(5).toList();
 
+          final activeUser = context.watch<UserBloc>().state is UserLoaded
+              ? (context.watch<UserBloc>().state as UserLoaded).activeUser
+              : null;
+          final canViewVaults = activeUser?.permissions.canViewVaultBalances ?? false;
+
+          final egpDisplay = canViewVaults ? CurrencyFormatter.format(totalEgp, Currency.EGP) : '•••••• (Restricted)';
+          final eurDisplay = canViewVaults ? CurrencyFormatter.format(totalEur, Currency.EUR) : '•••••• (Restricted)';
+          final usdDisplay = canViewVaults ? CurrencyFormatter.format(totalUsd, Currency.USD) : '•••••• (Restricted)';
+
           return SingleChildScrollView(
             padding: EdgeInsets.all(isMobile ? 12 : 24),
             child: Column(
@@ -61,7 +72,7 @@ class DashboardScreen extends StatelessWidget {
                       Expanded(
                         child: KpiCard(
                           title: AppTranslations.get('egpBalance', isArabic),
-                          value: CurrencyFormatter.format(totalEgp, Currency.EGP),
+                          value: egpDisplay,
                           subtitle: isArabic ? 'الخزينة الرئيسية للتشغيل' : 'Primary Operating Treasury',
                           icon: Icons.account_balance,
                           accentColor: AppColors.egp,
@@ -71,7 +82,7 @@ class DashboardScreen extends StatelessWidget {
                       Expanded(
                         child: KpiCard(
                           title: AppTranslations.get('eurBalance', isArabic),
-                          value: CurrencyFormatter.format(totalEur, Currency.EUR),
+                          value: eurDisplay,
                           subtitle: isArabic ? 'مشاريع سيمنس والواردات' : 'EU Imports & Siemens Projects',
                           icon: Icons.euro_rounded,
                           accentColor: AppColors.eur,
@@ -81,7 +92,7 @@ class DashboardScreen extends StatelessWidget {
                       Expanded(
                         child: KpiCard(
                           title: AppTranslations.get('usdBalance', isArabic),
-                          value: CurrencyFormatter.format(totalUsd, Currency.USD),
+                          value: usdDisplay,
                           subtitle: isArabic ? 'العقود الدولية والشحن' : 'International Contracts & Freight',
                           icon: Icons.monetization_on_rounded,
                           accentColor: AppColors.usd,
@@ -104,7 +115,7 @@ class DashboardScreen extends StatelessWidget {
                     children: [
                       KpiCard(
                         title: AppTranslations.get('egpBalance', isArabic),
-                        value: CurrencyFormatter.format(totalEgp, Currency.EGP),
+                        value: egpDisplay,
                         subtitle: isArabic ? 'الخزينة الرئيسية للتشغيل' : 'Primary Operating Treasury',
                         icon: Icons.account_balance,
                         accentColor: AppColors.egp,
@@ -112,7 +123,7 @@ class DashboardScreen extends StatelessWidget {
                       const SizedBox(height: 12),
                       KpiCard(
                         title: AppTranslations.get('eurBalance', isArabic),
-                        value: CurrencyFormatter.format(totalEur, Currency.EUR),
+                        value: eurDisplay,
                         subtitle: isArabic ? 'مشاريع سيمنس والواردات' : 'EU Imports & Siemens Projects',
                         icon: Icons.euro_rounded,
                         accentColor: AppColors.eur,
@@ -120,7 +131,7 @@ class DashboardScreen extends StatelessWidget {
                       const SizedBox(height: 12),
                       KpiCard(
                         title: AppTranslations.get('usdBalance', isArabic),
-                        value: CurrencyFormatter.format(totalUsd, Currency.USD),
+                        value: usdDisplay,
                         subtitle: isArabic ? 'العقود الدولية والشحن' : 'International Contracts & Freight',
                         icon: Icons.monetization_on_rounded,
                         accentColor: AppColors.usd,

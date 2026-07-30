@@ -8,6 +8,8 @@ class UserPermission extends Equatable {
   final bool canImportExportExcel;
   final bool canExecuteTransfer;
   final bool canManageUsers;
+  final bool canViewVaultBalances;
+  final bool canViewProjectRevenues;
 
   const UserPermission({
     this.canViewLedger = true,
@@ -17,6 +19,8 @@ class UserPermission extends Equatable {
     this.canImportExportExcel = false,
     this.canExecuteTransfer = false,
     this.canManageUsers = false,
+    this.canViewVaultBalances = false,
+    this.canViewProjectRevenues = false,
   });
 
   static const UserPermission adminPermissions = UserPermission(
@@ -27,6 +31,8 @@ class UserPermission extends Equatable {
     canImportExportExcel: true,
     canExecuteTransfer: true,
     canManageUsers: true,
+    canViewVaultBalances: true,
+    canViewProjectRevenues: true,
   );
 
   static const UserPermission standardUserPermissions = UserPermission(
@@ -37,6 +43,8 @@ class UserPermission extends Equatable {
     canImportExportExcel: false,
     canExecuteTransfer: false,
     canManageUsers: false,
+    canViewVaultBalances: false,
+    canViewProjectRevenues: false,
   );
 
   UserPermission copyWith({
@@ -47,6 +55,8 @@ class UserPermission extends Equatable {
     bool? canImportExportExcel,
     bool? canExecuteTransfer,
     bool? canManageUsers,
+    bool? canViewVaultBalances,
+    bool? canViewProjectRevenues,
   }) {
     return UserPermission(
       canViewLedger: canViewLedger ?? this.canViewLedger,
@@ -56,6 +66,8 @@ class UserPermission extends Equatable {
       canImportExportExcel: canImportExportExcel ?? this.canImportExportExcel,
       canExecuteTransfer: canExecuteTransfer ?? this.canExecuteTransfer,
       canManageUsers: canManageUsers ?? this.canManageUsers,
+      canViewVaultBalances: canViewVaultBalances ?? this.canViewVaultBalances,
+      canViewProjectRevenues: canViewProjectRevenues ?? this.canViewProjectRevenues,
     );
   }
 
@@ -67,6 +79,8 @@ class UserPermission extends Equatable {
         'canImportExportExcel': canImportExportExcel,
         'canExecuteTransfer': canExecuteTransfer,
         'canManageUsers': canManageUsers,
+        'canViewVaultBalances': canViewVaultBalances,
+        'canViewProjectRevenues': canViewProjectRevenues,
       };
 
   factory UserPermission.fromJson(Map<String, dynamic> json) => UserPermission(
@@ -77,6 +91,8 @@ class UserPermission extends Equatable {
         canImportExportExcel: json['canImportExportExcel'] as bool? ?? false,
         canExecuteTransfer: json['canExecuteTransfer'] as bool? ?? false,
         canManageUsers: json['canManageUsers'] as bool? ?? false,
+        canViewVaultBalances: json['canViewVaultBalances'] as bool? ?? false,
+        canViewProjectRevenues: json['canViewProjectRevenues'] as bool? ?? false,
       );
 
   @override
@@ -88,6 +104,8 @@ class UserPermission extends Equatable {
         canImportExportExcel,
         canExecuteTransfer,
         canManageUsers,
+        canViewVaultBalances,
+        canViewProjectRevenues,
       ];
 }
 
