@@ -42,7 +42,7 @@ class ImhErpApp extends StatelessWidget {
           return MaterialApp(
             title: 'IMHOSYS - Enterprise ERP & Ledger',
             debugShowCheckedModeBanner: false,
-            theme: AppTheme.darkTheme,
+            theme: AppTheme.lightTheme,
             locale: locale,
             supportedLocales: const [
               Locale('en'),

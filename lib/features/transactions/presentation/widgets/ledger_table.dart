@@ -48,7 +48,7 @@ class LedgerTable extends StatelessWidget {
               const SizedBox(height: 12),
               Text(
                 isArabic ? 'لم يتم العثور على معاملات' : 'No Ledger Entries Found',
-                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
               ),
               const SizedBox(height: 4),
               Text(
@@ -122,7 +122,7 @@ class LedgerTable extends StatelessWidget {
                       width: 220,
                       child: Text(
                         t.description,
-                        style: const TextStyle(fontSize: 12, color: Colors.white, fontWeight: FontWeight.w500),
+                        style: const TextStyle(fontSize: 12, color: AppColors.textPrimary, fontWeight: FontWeight.w500),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -188,7 +188,7 @@ class LedgerTable extends StatelessWidget {
                   DataCell(
                     Text(
                       t.sourceAccount,
-                      style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Colors.white),
+                      style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: AppColors.textPrimary),
                     ),
                   ),
                   // Actions (Enforced by activeUser permissions)

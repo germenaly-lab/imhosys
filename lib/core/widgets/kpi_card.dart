@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../constants/app_colors.dart';
 
 class KpiCard extends StatelessWidget {
   final String title;
@@ -67,7 +68,7 @@ class KpiCard extends StatelessWidget {
               fontSize: 24,
               fontWeight: FontWeight.w800,
               letterSpacing: -0.5,
-              color: Colors.white,
+              color: AppColors.textPrimary,
             ),
           ),
           if (subtitle != null || trailingWidget != null) ...[

@@ -118,7 +118,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.4),
+                            color: Colors.black.withValues(alpha: 0.08),
                             blurRadius: 24,
                             offset: const Offset(0, 10),
                           ),
@@ -136,7 +136,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 fontSize: 13,
                                 fontWeight: FontWeight.w900,
                                 letterSpacing: 1.0,
-                                color: Colors.white,
+                                color: AppColors.textPrimary,
                               ),
                             ),
                             const SizedBox(height: 4),
@@ -166,7 +166,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   value: _selectedUserId,
                                   dropdownColor: AppColors.surface,
                                   isExpanded: true,
-                                  style: const TextStyle(fontSize: 13, color: Colors.white, fontWeight: FontWeight.bold),
+                                  style: const TextStyle(fontSize: 13, color: AppColors.textPrimary, fontWeight: FontWeight.bold),
                                   icon: const Icon(Icons.arrow_drop_down, color: AppColors.primaryLight),
                                   items: users.map((u) {
                                     return DropdownMenuItem<String>(
@@ -208,7 +208,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             TextFormField(
                               controller: _passwordController,
                               obscureText: _obscurePassword,
-                              style: const TextStyle(color: Colors.white, fontSize: 14, letterSpacing: 1.2),
+                              style: const TextStyle(color: AppColors.textPrimary, fontSize: 14, letterSpacing: 1.2),
                               decoration: InputDecoration(
                                 hintText: isArabic ? 'ادخل كلمة المرور' : 'Enter Password',
                                 prefixIcon: const Icon(Icons.lock_outline_rounded, size: 18, color: AppColors.primaryLight),

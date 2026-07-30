@@ -244,7 +244,7 @@ class FilterBar extends StatelessWidget {
           value: items.contains(value) ? value : items.first,
           dropdownColor: AppColors.surface,
           isExpanded: true,
-          style: const TextStyle(fontSize: 12, color: Colors.white, fontWeight: FontWeight.w500),
+          style: const TextStyle(fontSize: 12, color: AppColors.textPrimary, fontWeight: FontWeight.w500),
           icon: const Icon(Icons.arrow_drop_down, color: AppColors.textSecondary, size: 20),
           items: items.map((item) {
             return DropdownMenuItem<String>(

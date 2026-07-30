@@ -3,31 +3,32 @@ import 'package:google_fonts/google_fonts.dart';
 import '../constants/app_colors.dart';
 
 class AppTheme {
-  static ThemeData get darkTheme {
+  static ThemeData get lightTheme {
     return ThemeData(
       useMaterial3: true,
-      brightness: Brightness.dark,
+      brightness: Brightness.light,
       scaffoldBackgroundColor: AppColors.background,
-      colorScheme: const ColorScheme.dark(
+      colorScheme: const ColorScheme.light(
         primary: AppColors.primary,
         secondary: AppColors.secondary,
         surface: AppColors.surface,
         error: AppColors.error,
         onPrimary: Colors.white,
-        onSurface: AppColors.textLight,
+        onSurface: AppColors.textPrimary,
       ),
       textTheme: GoogleFonts.interTextTheme(
-        ThemeData.dark().textTheme.copyWith(
-          displayLarge: const TextStyle(color: AppColors.textLight, fontWeight: FontWeight.bold),
-          headlineMedium: const TextStyle(color: AppColors.textLight, fontWeight: FontWeight.w700),
-          titleLarge: const TextStyle(color: AppColors.textLight, fontWeight: FontWeight.w600),
-          bodyLarge: const TextStyle(color: AppColors.textLight),
+        ThemeData.light().textTheme.copyWith(
+          displayLarge: const TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.bold),
+          headlineMedium: const TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.w700),
+          titleLarge: const TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.w600),
+          bodyLarge: const TextStyle(color: AppColors.textPrimary),
           bodyMedium: const TextStyle(color: AppColors.textSecondary),
         ),
       ),
       cardTheme: CardThemeData(
         color: AppColors.surface,
-        elevation: 2,
+        elevation: 1,
+        shadowColor: Colors.black.withValues(alpha: 0.04),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
           side: const BorderSide(color: AppColors.divider, width: 1),
@@ -42,7 +43,7 @@ class AppTheme {
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: AppColors.background,
+        fillColor: AppColors.surface,
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
@@ -60,4 +61,6 @@ class AppTheme {
       ),
     );
   }
+
+  static ThemeData get darkTheme => lightTheme;
 }

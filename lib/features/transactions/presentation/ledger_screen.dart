@@ -105,7 +105,7 @@ class LedgerScreen extends StatelessWidget {
                         fontSize: 13,
                         fontWeight: FontWeight.w800,
                         letterSpacing: 0.8,
-                        color: Colors.white,
+                        color: AppColors.textPrimary,
                       ),
                     ),
                     Row(
@@ -160,7 +160,7 @@ class LedgerScreen extends StatelessWidget {
               const SizedBox(height: 6),
               Text(
                 value,
-                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w800, color: Colors.white),
+                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w800, color: AppColors.textPrimary),
               ),
               const SizedBox(height: 4),
               Text(count, style: const TextStyle(fontSize: 11, color: AppColors.textSecondary)),

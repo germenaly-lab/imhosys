@@ -133,7 +133,7 @@ class _TransactionDialogState extends State<TransactionDialog> {
                           style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
-                            color: Colors.white,
+                            color: AppColors.textPrimary,
                           ),
                         ),
                       ],
@@ -162,7 +162,7 @@ class _TransactionDialogState extends State<TransactionDialog> {
                 // Description
                 TextFormField(
                   controller: _descriptionController,
-                  style: const TextStyle(color: Colors.white, fontSize: 14),
+                  style: const TextStyle(color: AppColors.textPrimary, fontSize: 14),
                   decoration: InputDecoration(
                     labelText: AppTranslations.get('descLabel', isArabic),
                     hintText: AppTranslations.get('descHint', isArabic),
@@ -197,7 +197,7 @@ class _TransactionDialogState extends State<TransactionDialog> {
                           ),
                           child: Text(
                             '${_selectedDate.year}-${_selectedDate.month.toString().padLeft(2, '0')}-${_selectedDate.day.toString().padLeft(2, '0')}',
-                            style: const TextStyle(color: Colors.white, fontSize: 13),
+                            style: const TextStyle(color: AppColors.textPrimary, fontSize: 13),
                           ),
                         ),
                       ),
@@ -206,7 +206,7 @@ class _TransactionDialogState extends State<TransactionDialog> {
                     Expanded(
                       child: TextFormField(
                         controller: _invoiceController,
-                        style: const TextStyle(color: Colors.white, fontSize: 14),
+                        style: const TextStyle(color: AppColors.textPrimary, fontSize: 14),
                         decoration: InputDecoration(
                           labelText: AppTranslations.get('invoiceLabel', isArabic),
                           hintText: AppTranslations.get('invoiceHint', isArabic),
@@ -245,7 +245,7 @@ class _TransactionDialogState extends State<TransactionDialog> {
                             child: TextFormField(
                               controller: _egpController,
                               keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                              style: const TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.bold),
                               decoration: InputDecoration(
                                 labelText: AppTranslations.get('amountEgpLabel', isArabic),
                                 prefixText: 'EGP ',
@@ -257,7 +257,7 @@ class _TransactionDialogState extends State<TransactionDialog> {
                             child: TextFormField(
                               controller: _eurController,
                               keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                              style: const TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.bold),
                               decoration: InputDecoration(
                                 labelText: AppTranslations.get('amountEurLabel', isArabic),
                                 prefixText: '€ ',
@@ -269,7 +269,7 @@ class _TransactionDialogState extends State<TransactionDialog> {
                             child: TextFormField(
                               controller: _usdController,
                               keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                              style: const TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.bold),
                               decoration: InputDecoration(
                                 labelText: AppTranslations.get('amountUsdLabel', isArabic),
                                 prefixText: '\$ ',
@@ -291,7 +291,7 @@ class _TransactionDialogState extends State<TransactionDialog> {
                       child: DropdownButtonFormField<String>(
                         initialValue: _selectedCategory,
                         dropdownColor: AppColors.surface,
-                        style: const TextStyle(color: Colors.white, fontSize: 13),
+                        style: const TextStyle(color: AppColors.textPrimary, fontSize: 13),
                         decoration: InputDecoration(labelText: AppTranslations.get('categoryLabel', isArabic)),
                         items: AppCategories.getAllSubcategories().map((c) {
                           return DropdownMenuItem(
@@ -312,7 +312,7 @@ class _TransactionDialogState extends State<TransactionDialog> {
                       child: DropdownButtonFormField<String>(
                         initialValue: _selectedProject,
                         dropdownColor: AppColors.surface,
-                        style: const TextStyle(color: Colors.white, fontSize: 13),
+                        style: const TextStyle(color: AppColors.textPrimary, fontSize: 13),
                         decoration: InputDecoration(labelText: AppTranslations.get('projectTagLabel', isArabic)),
                         items: AppProjects.getProjectNames().map((p) {
                           return DropdownMenuItem(value: p, child: Text(p, overflow: TextOverflow.ellipsis));
@@ -333,7 +333,7 @@ class _TransactionDialogState extends State<TransactionDialog> {
                       child: DropdownButtonFormField<String>(
                         initialValue: _selectedAccount,
                         dropdownColor: AppColors.surface,
-                        style: const TextStyle(color: Colors.white, fontSize: 13),
+                        style: const TextStyle(color: AppColors.textPrimary, fontSize: 13),
                         decoration: InputDecoration(labelText: AppTranslations.get('sourceAccountLabel', isArabic)),
                         items: AppAccounts.getAccountCodes().map((a) {
                           return DropdownMenuItem(value: a, child: Text(a));
@@ -348,7 +348,7 @@ class _TransactionDialogState extends State<TransactionDialog> {
                       child: DropdownButtonFormField<String>(
                         initialValue: _selectedPerson,
                         dropdownColor: AppColors.surface,
-                        style: const TextStyle(color: Colors.white, fontSize: 13),
+                        style: const TextStyle(color: AppColors.textPrimary, fontSize: 13),
                         decoration: InputDecoration(labelText: AppTranslations.get('responsiblePersonLabel', isArabic)),
                         items: _responsiblePersons.map((person) {
                           return DropdownMenuItem(value: person, child: Text(person));

@@ -47,7 +47,7 @@ class AccountsScreen extends StatelessWidget {
                             fontSize: 16,
                             fontWeight: FontWeight.w900,
                             letterSpacing: 0.8,
-                            color: Colors.white,
+                            color: AppColors.textPrimary,
                           ),
                         ),
                         SizedBox(height: 4),
@@ -119,7 +119,7 @@ class AccountsScreen extends StatelessWidget {
                                 children: [
                                   Text(
                                     acc.code,
-                                    style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white),
+                                    style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
                                   ),
                                   Text(
                                     acc.responsiblePerson,
@@ -144,7 +144,7 @@ class AccountsScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             const Text('Transactions:', style: TextStyle(fontSize: 11, color: AppColors.textSecondary)),
-                            Text('${accTxns.length} Recorded', style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.white)),
+                            Text('${accTxns.length} Recorded', style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
                           ],
                         ),
                         const SizedBox(height: 4),
@@ -223,14 +223,14 @@ class _InternalTransferModalState extends State<_InternalTransferModal> {
               children: [
                 Icon(Icons.swap_horiz_rounded, color: AppColors.secondary, size: 24),
                 SizedBox(width: 10),
-                Text('Internal Vault Transfer', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
+                Text('Internal Vault Transfer', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
               ],
             ),
             const Divider(color: AppColors.divider, height: 28),
             DropdownButtonFormField<String>(
               initialValue: _fromAccount,
               dropdownColor: AppColors.surface,
-              style: const TextStyle(color: Colors.white),
+              style: const TextStyle(color: AppColors.textPrimary),
               decoration: const InputDecoration(labelText: 'From Vault / Account'),
               items: accountCodes.map((a) => DropdownMenuItem(value: a, child: Text(a))).toList(),
               onChanged: (val) => setState(() => _fromAccount = val!),
@@ -239,7 +239,7 @@ class _InternalTransferModalState extends State<_InternalTransferModal> {
             DropdownButtonFormField<String>(
               initialValue: _toAccount,
               dropdownColor: AppColors.surface,
-              style: const TextStyle(color: Colors.white),
+              style: const TextStyle(color: AppColors.textPrimary),
               decoration: const InputDecoration(labelText: 'To Vault / Account'),
               items: accountCodes.map((a) => DropdownMenuItem(value: a, child: Text(a))).toList(),
               onChanged: (val) => setState(() => _toAccount = val!),
@@ -248,13 +248,13 @@ class _InternalTransferModalState extends State<_InternalTransferModal> {
             TextField(
               controller: _amountController,
               keyboardType: TextInputType.number,
-              style: const TextStyle(color: Colors.white),
+              style: const TextStyle(color: AppColors.textPrimary),
               decoration: const InputDecoration(labelText: 'Transfer Amount', prefixText: 'EGP / EUR / USD '),
             ),
             const SizedBox(height: 16),
             TextField(
               controller: _notesController,
-              style: const TextStyle(color: Colors.white),
+              style: const TextStyle(color: AppColors.textPrimary),
               decoration: const InputDecoration(labelText: 'Transfer Reason / Notes'),
             ),
             const SizedBox(height: 24),

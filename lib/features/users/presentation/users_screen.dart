@@ -44,7 +44,7 @@ class UsersScreen extends StatelessWidget {
                           fontSize: 16,
                           fontWeight: FontWeight.w900,
                           letterSpacing: 0.8,
-                          color: Colors.white,
+                          color: AppColors.textPrimary,
                         ),
                       ),
                       const SizedBox(height: 4),
@@ -139,7 +139,7 @@ class UsersScreen extends StatelessWidget {
                           const SizedBox(height: 4),
                           Text(
                             '${activeUser.name} • (${activeUser.email})',
-                            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white),
+                            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
                           ),
                         ],
                       ),
@@ -196,7 +196,7 @@ class UsersScreen extends StatelessWidget {
                                     children: [
                                       Text(
                                         user.name,
-                                        style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white),
+                                        style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
                                       ),
                                       const SizedBox(width: 10),
                                       const StatusBadge(

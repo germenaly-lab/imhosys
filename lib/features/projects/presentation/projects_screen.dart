@@ -50,7 +50,7 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
                   fontSize: 16,
                   fontWeight: FontWeight.w900,
                   letterSpacing: 0.8,
-                  color: Colors.white,
+                  color: AppColors.textPrimary,
                 ),
               ),
               const SizedBox(height: 4),
@@ -130,7 +130,7 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
                             style: const TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                              color: AppColors.textPrimary,
                             ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
@@ -149,21 +149,21 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   const Text('EGP COST', style: TextStyle(fontSize: 9, color: AppColors.egp, fontWeight: FontWeight.bold)),
-                                  Text(CurrencyFormatter.format(egpSum, Currency.EGP), style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.white)),
+                                  Text(CurrencyFormatter.format(egpSum, Currency.EGP), style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
                                 ],
                               ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   const Text('EUR COST', style: TextStyle(fontSize: 9, color: AppColors.eur, fontWeight: FontWeight.bold)),
-                                  Text(CurrencyFormatter.format(eurSum, Currency.EUR), style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.white)),
+                                  Text(CurrencyFormatter.format(eurSum, Currency.EUR), style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
                                 ],
                               ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   const Text('USD COST', style: TextStyle(fontSize: 9, color: AppColors.usd, fontWeight: FontWeight.bold)),
-                                  Text(CurrencyFormatter.format(usdSum, Currency.USD), style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.white)),
+                                  Text(CurrencyFormatter.format(usdSum, Currency.USD), style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
                                 ],
                               ),
                             ],
@@ -210,7 +210,7 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
                   const SizedBox(width: 10),
                   Text(
                     'PROJECT LEDGER DRILL-DOWN: $projectName',
-                    style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white),
+                    style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
                   ),
                 ],
               ),
@@ -240,7 +240,7 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
                     const SizedBox(width: 16),
                     Expanded(
                       flex: 3,
-                      child: Text(t.description, style: const TextStyle(fontSize: 12, color: Colors.white)),
+                      child: Text(t.description, style: const TextStyle(fontSize: 12, color: AppColors.textPrimary)),
                     ),
                     Expanded(
                       flex: 2,

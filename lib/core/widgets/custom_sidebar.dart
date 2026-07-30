@@ -53,7 +53,7 @@ class CustomSidebar extends StatelessWidget {
                           fontSize: 15,
                           fontWeight: FontWeight.w900,
                           letterSpacing: 0.5,
-                          color: Colors.white,
+                          color: AppColors.textPrimary,
                         ),
                       ),
                       Text(
@@ -188,7 +188,7 @@ class CustomSidebar extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 13,
                       fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-                      color: isSelected ? Colors.white : AppColors.textSecondary,
+                      color: isSelected ? AppColors.primary : AppColors.textSecondary,
                     ),
                   ),
                 ),

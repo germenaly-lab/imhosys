@@ -54,7 +54,7 @@ class HeaderBar extends StatelessWidget {
           children: [
             if (isMobile && onOpenDrawer != null) ...[
               IconButton(
-                icon: const Icon(Icons.menu_rounded, color: Colors.white, size: 24),
+                icon: const Icon(Icons.menu_rounded, color: AppColors.textPrimary, size: 24),
                 onPressed: onOpenDrawer,
                 tooltip: isArabic ? 'القائمة' : 'Menu',
               ),
@@ -67,7 +67,7 @@ class HeaderBar extends StatelessWidget {
               style: TextStyle(
                 fontSize: isMobile ? 14 : 17,
                 fontWeight: FontWeight.w800,
-                color: Colors.white,
+                color: AppColors.textPrimary,
                 letterSpacing: -0.3,
               ),
             ),
@@ -90,7 +90,7 @@ class HeaderBar extends StatelessWidget {
                   child: DropdownButton<String>(
                     value: activeUser.id,
                     dropdownColor: AppColors.surface,
-                    style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.white),
+                    style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
                     icon: const Icon(
                       Icons.arrow_drop_down,
                       color: AppColors.primaryLight,
@@ -128,7 +128,7 @@ class HeaderBar extends StatelessWidget {
               height: 36,
               child: TextField(
                 onChanged: onSearch,
-                style: const TextStyle(fontSize: 12, color: Colors.white),
+                style: const TextStyle(fontSize: 12, color: AppColors.textPrimary),
                 decoration: InputDecoration(
                   hintText: AppTranslations.get('searchHint', isArabic),
                   prefixIcon: const Icon(Icons.search, size: 16, color: AppColors.textSecondary),

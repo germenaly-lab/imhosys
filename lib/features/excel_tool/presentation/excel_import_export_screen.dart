@@ -40,7 +40,7 @@ class _ExcelImportExportScreenState extends State<ExcelImportExportScreen> {
                   fontSize: 16,
                   fontWeight: FontWeight.w900,
                   letterSpacing: 0.8,
-                  color: Colors.white,
+                  color: AppColors.textPrimary,
                 ),
               ),
               const SizedBox(height: 4),
@@ -72,7 +72,7 @@ class _ExcelImportExportScreenState extends State<ExcelImportExportScreen> {
                     const SizedBox(height: 16),
                     const Text(
                       'Upload Acco.xlsx or CSV Legacy Ledger File',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
                     ),
                     const SizedBox(height: 6),
                     const Text(
@@ -101,7 +101,7 @@ class _ExcelImportExportScreenState extends State<ExcelImportExportScreen> {
                   children: [
                     Text(
                       'PARSED FILE PREVIEW: $_fileName (${_parsedPreview.length} Rows)',
-                      style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.white),
+                      style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
                     ),
                     ElevatedButton.icon(
                       onPressed: _importParsedRows,
@@ -130,7 +130,7 @@ class _ExcelImportExportScreenState extends State<ExcelImportExportScreen> {
                           backgroundColor: AppColors.primary.withValues(alpha: 0.2),
                           child: Text('${idx + 1}', style: const TextStyle(fontSize: 11, color: AppColors.primaryLight)),
                         ),
-                        title: Text(item.description, style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w600)),
+                        title: Text(item.description, style: const TextStyle(color: AppColors.textPrimary, fontSize: 13, fontWeight: FontWeight.w600)),
                         subtitle: Text('${item.category} • ${item.projectTag} • ${item.responsiblePerson}', style: const TextStyle(fontSize: 11, color: AppColors.textSecondary)),
                         trailing: Text(
                           'EGP ${item.amountEgp} | EUR ${item.amountEur} | USD ${item.amountUsd}',
