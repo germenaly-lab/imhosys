@@ -85,6 +85,7 @@ class FilterBar extends StatelessWidget {
               children: [
                 Expanded(
                   child: _buildFilterDropdown(
+                    context: context,
                     value: selectedProject ?? AppTranslations.get('allProjects', isArabic),
                     items: projects,
                     hint: 'Project',
@@ -96,6 +97,7 @@ class FilterBar extends StatelessWidget {
                 const SizedBox(width: 8),
                 Expanded(
                   child: _buildFilterDropdown(
+                    context: context,
                     value: selectedCategory ?? AppTranslations.get('allCategories', isArabic),
                     items: categories,
                     hint: 'Category',
@@ -111,6 +113,7 @@ class FilterBar extends StatelessWidget {
               children: [
                 Expanded(
                   child: _buildFilterDropdown(
+                    context: context,
                     value: selectedAccount ?? AppTranslations.get('allAccounts', isArabic),
                     items: accounts,
                     hint: 'Account',
@@ -122,6 +125,7 @@ class FilterBar extends StatelessWidget {
                 const SizedBox(width: 8),
                 Expanded(
                   child: _buildFilterDropdown(
+                    context: context,
                     value: selectedPerson ?? AppTranslations.get('allPersons', isArabic),
                     items: persons,
                     hint: 'Person',
@@ -162,6 +166,7 @@ class FilterBar extends StatelessWidget {
           // Project Filter
           Expanded(
             child: _buildFilterDropdown(
+              context: context,
               value: selectedProject ?? AppTranslations.get('allProjects', isArabic),
               items: projects,
               hint: 'Project Tag',
@@ -175,6 +180,7 @@ class FilterBar extends StatelessWidget {
           // Category Filter
           Expanded(
             child: _buildFilterDropdown(
+              context: context,
               value: selectedCategory ?? AppTranslations.get('allCategories', isArabic),
               items: categories,
               hint: 'Expense Category',
@@ -188,6 +194,7 @@ class FilterBar extends StatelessWidget {
           // Source Account Filter
           Expanded(
             child: _buildFilterDropdown(
+              context: context,
               value: selectedAccount ?? AppTranslations.get('allAccounts', isArabic),
               items: accounts,
               hint: 'Source Vault/Bank',
@@ -201,6 +208,7 @@ class FilterBar extends StatelessWidget {
           // Person Filter
           Expanded(
             child: _buildFilterDropdown(
+              context: context,
               value: selectedPerson ?? AppTranslations.get('allPersons', isArabic),
               items: persons,
               hint: 'Responsible Person',
@@ -224,6 +232,7 @@ class FilterBar extends StatelessWidget {
   }
 
   Widget _buildFilterDropdown({
+    required BuildContext context,
     required String value,
     required List<String> items,
     required String hint,
@@ -242,9 +251,9 @@ class FilterBar extends StatelessWidget {
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
           value: items.contains(value) ? value : items.first,
-          dropdownColor: AppColors.surface,
+          dropdownColor: AppColors.getSurface(context),
           isExpanded: true,
-          style: const TextStyle(fontSize: 12, color: AppColors.textPrimary, fontWeight: FontWeight.w500),
+          style: TextStyle(fontSize: 12, color: AppColors.getTextPrimary(context), fontWeight: FontWeight.w500),
           icon: const Icon(Icons.arrow_drop_down, color: AppColors.textSecondary, size: 20),
           items: items.map((item) {
             return DropdownMenuItem<String>(

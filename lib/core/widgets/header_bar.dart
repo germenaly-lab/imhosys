@@ -45,10 +45,10 @@ class HeaderBar extends StatelessWidget {
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: isMobile ? 12 : 24, vertical: 10),
-      decoration: const BoxDecoration(
-        color: AppColors.surface,
+      decoration: BoxDecoration(
+        color: AppColors.getSurface(context),
         border: Border(
-          bottom: BorderSide(color: AppColors.divider, width: 1),
+          bottom: BorderSide(color: AppColors.getDivider(context), width: 1),
         ),
       ),
       child: SingleChildScrollView(
@@ -70,7 +70,7 @@ class HeaderBar extends StatelessWidget {
               style: TextStyle(
                 fontSize: isMobile ? 14 : 17,
                 fontWeight: FontWeight.w800,
-                color: AppColors.textPrimary,
+                color: AppColors.getTextPrimary(context),
                 letterSpacing: -0.3,
               ),
             ),
@@ -92,8 +92,8 @@ class HeaderBar extends StatelessWidget {
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<String>(
                     value: activeUser.id,
-                    dropdownColor: AppColors.surface,
-                    style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+                    dropdownColor: AppColors.getSurface(context),
+                    style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: AppColors.getTextPrimary(context)),
                     icon: const Icon(
                       Icons.arrow_drop_down,
                       color: AppColors.primaryLight,
@@ -131,12 +131,12 @@ class HeaderBar extends StatelessWidget {
               height: 36,
               child: TextField(
                 onChanged: onSearch,
-                style: const TextStyle(fontSize: 12, color: AppColors.textPrimary),
+                style: TextStyle(fontSize: 12, color: AppColors.getTextPrimary(context)),
                 decoration: InputDecoration(
                   hintText: AppTranslations.get('searchHint', isArabic),
-                  prefixIcon: const Icon(Icons.search, size: 16, color: AppColors.textSecondary),
+                  prefixIcon: Icon(Icons.search, size: 16, color: AppColors.getTextSecondary(context)),
                   filled: true,
-                  fillColor: AppColors.background,
+                  fillColor: AppColors.getBackground(context),
                   contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),

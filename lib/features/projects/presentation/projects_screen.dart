@@ -44,13 +44,13 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 'ENGINEERING PROJECTS & COST CENTERS',
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w900,
                   letterSpacing: 0.8,
-                  color: AppColors.textPrimary,
+                  color: AppColors.getTextPrimary(context),
                 ),
               ),
               const SizedBox(height: 4),
@@ -91,10 +91,10 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
                     child: Container(
                       padding: const EdgeInsets.all(18),
                       decoration: BoxDecoration(
-                        color: AppColors.surface,
+                        color: AppColors.getSurface(context),
                         borderRadius: BorderRadius.circular(14),
                         border: Border.all(
-                          color: isSelected ? AppColors.primary : AppColors.divider,
+                          color: isSelected ? AppColors.primary : AppColors.getDivider(context),
                           width: isSelected ? 2 : 1,
                         ),
                         boxShadow: isSelected
@@ -127,10 +127,10 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
                           const SizedBox(height: 12),
                           Text(
                             project.name,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
-                              color: AppColors.textPrimary,
+                              color: AppColors.getTextPrimary(context),
                             ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
@@ -149,21 +149,21 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   const Text('EGP COST', style: TextStyle(fontSize: 9, color: AppColors.egp, fontWeight: FontWeight.bold)),
-                                  Text(CurrencyFormatter.format(egpSum, Currency.EGP), style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+                                  Text(CurrencyFormatter.format(egpSum, Currency.EGP), style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: AppColors.getTextPrimary(context))),
                                 ],
                               ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   const Text('EUR COST', style: TextStyle(fontSize: 9, color: AppColors.eur, fontWeight: FontWeight.bold)),
-                                  Text(CurrencyFormatter.format(eurSum, Currency.EUR), style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+                                  Text(CurrencyFormatter.format(eurSum, Currency.EUR), style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: AppColors.getTextPrimary(context))),
                                 ],
                               ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   const Text('USD COST', style: TextStyle(fontSize: 9, color: AppColors.usd, fontWeight: FontWeight.bold)),
-                                  Text(CurrencyFormatter.format(usdSum, Currency.USD), style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+                                  Text(CurrencyFormatter.format(usdSum, Currency.USD), style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: AppColors.getTextPrimary(context))),
                                 ],
                               ),
                             ],
@@ -210,7 +210,7 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
                   const SizedBox(width: 10),
                   Text(
                     'PROJECT LEDGER DRILL-DOWN: $projectName',
-                    style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.getTextPrimary(context)),
                   ),
                 ],
               ),
@@ -240,7 +240,7 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
                     const SizedBox(width: 16),
                     Expanded(
                       flex: 3,
-                      child: Text(t.description, style: const TextStyle(fontSize: 12, color: AppColors.textPrimary)),
+                      child: Text(t.description, style: TextStyle(fontSize: 12, color: AppColors.getTextPrimary(context))),
                     ),
                     Expanded(
                       flex: 2,

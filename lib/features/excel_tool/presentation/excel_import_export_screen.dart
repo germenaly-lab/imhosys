@@ -34,13 +34,13 @@ class _ExcelImportExportScreenState extends State<ExcelImportExportScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 'EXCEL / CSV IMPORT & EXPORT ENGINE',
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w900,
                   letterSpacing: 0.8,
-                  color: AppColors.textPrimary,
+                  color: AppColors.getTextPrimary(context),
                 ),
               ),
               const SizedBox(height: 4),
@@ -55,7 +55,7 @@ class _ExcelImportExportScreenState extends State<ExcelImportExportScreen> {
                 width: double.infinity,
                 padding: const EdgeInsets.all(32),
                 decoration: BoxDecoration(
-                  color: AppColors.surface,
+                  color: AppColors.getSurface(context),
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(color: AppColors.primary.withValues(alpha: 0.4), width: 1.5),
                 ),
@@ -70,9 +70,9 @@ class _ExcelImportExportScreenState extends State<ExcelImportExportScreen> {
                       child: const Icon(Icons.cloud_upload_outlined, color: AppColors.primary, size: 40),
                     ),
                     const SizedBox(height: 16),
-                    const Text(
+                    Text(
                       'Upload Acco.xlsx or CSV Legacy Ledger File',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.getTextPrimary(context)),
                     ),
                     const SizedBox(height: 6),
                     const Text(
@@ -101,7 +101,7 @@ class _ExcelImportExportScreenState extends State<ExcelImportExportScreen> {
                   children: [
                     Text(
                       'PARSED FILE PREVIEW: $_fileName (${_parsedPreview.length} Rows)',
-                      style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+                      style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: AppColors.getTextPrimary(context)),
                     ),
                     ElevatedButton.icon(
                       onPressed: _importParsedRows,
@@ -114,9 +114,9 @@ class _ExcelImportExportScreenState extends State<ExcelImportExportScreen> {
                 const SizedBox(height: 12),
                 Container(
                   decoration: BoxDecoration(
-                    color: AppColors.surface,
+                    color: AppColors.getSurface(context),
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: AppColors.divider),
+                    border: Border.all(color: AppColors.getDivider(context)),
                   ),
                   child: ListView.separated(
                     shrinkWrap: true,
@@ -130,7 +130,7 @@ class _ExcelImportExportScreenState extends State<ExcelImportExportScreen> {
                           backgroundColor: AppColors.primary.withValues(alpha: 0.2),
                           child: Text('${idx + 1}', style: const TextStyle(fontSize: 11, color: AppColors.primaryLight)),
                         ),
-                        title: Text(item.description, style: const TextStyle(color: AppColors.textPrimary, fontSize: 13, fontWeight: FontWeight.w600)),
+                        title: Text(item.description, style: TextStyle(color: AppColors.getTextPrimary(context), fontSize: 13, fontWeight: FontWeight.w600)),
                         subtitle: Text('${item.category} • ${item.projectTag} • ${item.responsiblePerson}', style: const TextStyle(fontSize: 11, color: AppColors.textSecondary)),
                         trailing: Text(
                           'EGP ${item.amountEgp} | EUR ${item.amountEur} | USD ${item.amountUsd}',

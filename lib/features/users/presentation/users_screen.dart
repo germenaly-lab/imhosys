@@ -40,11 +40,11 @@ class UsersScreen extends StatelessWidget {
                     children: [
                       Text(
                         isArabic ? 'إدارة حسابات المستخدمين وصلاحيات الأدوار' : 'USER ACCOUNTS & PERMISSION MANAGEMENT',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w900,
                           letterSpacing: 0.8,
-                          color: AppColors.textPrimary,
+                          color: AppColors.getTextPrimary(context),
                         ),
                       ),
                       const SizedBox(height: 4),
@@ -139,7 +139,7 @@ class UsersScreen extends StatelessWidget {
                           const SizedBox(height: 4),
                           Text(
                             '${activeUser.name} • (${activeUser.email})',
-                            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.getTextPrimary(context)),
                           ),
                         ],
                       ),
@@ -196,12 +196,14 @@ class UsersScreen extends StatelessWidget {
                                     children: [
                                       Text(
                                         user.name,
-                                        style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+                                        style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: AppColors.getTextPrimary(context)),
                                       ),
                                       const SizedBox(width: 10),
-                                      const StatusBadge(
-                                        text: 'USER',
-                                        color: AppColors.primary,
+                                      StatusBadge(
+                                        text: user.permissions.canManageUsers
+                                            ? (isArabic ? 'مدير نظام' : 'ADMIN')
+                                            : (isArabic ? 'مستخدم' : 'USER'),
+                                        color: user.permissions.canManageUsers ? AppColors.primary : AppColors.secondary,
                                       ),
                                       const SizedBox(width: 8),
                                       StatusBadge(text: 'Entity: ${user.entityCode}', color: AppColors.textSecondary),

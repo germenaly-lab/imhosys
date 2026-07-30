@@ -64,11 +64,11 @@ class KpiCard extends StatelessWidget {
           const SizedBox(height: 12),
           Text(
             value,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.w800,
               letterSpacing: -0.5,
-              color: AppColors.textPrimary,
+              color: AppColors.getTextPrimary(context),
             ),
           ),
           if (subtitle != null || trailingWidget != null) ...[
@@ -82,7 +82,7 @@ class KpiCard extends StatelessWidget {
                       subtitle!,
                       style: TextStyle(
                         fontSize: 12,
-                        color: Colors.grey[400],
+                        color: AppColors.getTextSecondary(context),
                       ),
                       overflow: TextOverflow.ellipsis,
                     ),

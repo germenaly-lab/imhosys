@@ -37,6 +37,7 @@ class LedgerScreen extends StatelessWidget {
                   children: [
                     Expanded(
                       child: _buildSummaryCard(
+                        context,
                         AppTranslations.get('totalEgpIncurred', isArabic),
                         CurrencyFormatter.format(state.totalEgp, Currency.EGP),
                         isArabic ? '${state.filteredTransactions.where((t) => t.amountEgp > 0).length} معاملات' : '${state.filteredTransactions.where((t) => t.amountEgp > 0).length} Entries',
@@ -47,6 +48,7 @@ class LedgerScreen extends StatelessWidget {
                     const SizedBox(width: 16),
                     Expanded(
                       child: _buildSummaryCard(
+                        context,
                         AppTranslations.get('totalEurIncurred', isArabic),
                         CurrencyFormatter.format(state.totalEur, Currency.EUR),
                         isArabic ? '${state.filteredTransactions.where((t) => t.amountEur > 0).length} معاملات' : '${state.filteredTransactions.where((t) => t.amountEur > 0).length} Entries',
@@ -57,6 +59,7 @@ class LedgerScreen extends StatelessWidget {
                     const SizedBox(width: 16),
                     Expanded(
                       child: _buildSummaryCard(
+                        context,
                         AppTranslations.get('totalUsdIncurred', isArabic),
                         CurrencyFormatter.format(state.totalUsd, Currency.USD),
                         isArabic ? '${state.filteredTransactions.where((t) => t.amountUsd > 0).length} معاملات' : '${state.filteredTransactions.where((t) => t.amountUsd > 0).length} Entries',
@@ -101,11 +104,11 @@ class LedgerScreen extends StatelessWidget {
                   children: [
                     Text(
                       isArabic ? 'معاملات دفتر السجل (${state.filteredTransactions.length})' : 'LEDGER ENTRIES (${state.filteredTransactions.length})',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.w800,
                         letterSpacing: 0.8,
-                        color: AppColors.textPrimary,
+                        color: AppColors.getTextPrimary(context),
                       ),
                     ),
                     Row(
@@ -139,11 +142,11 @@ class LedgerScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSummaryCard(String title, String value, String count, Color color, IconData icon) {
+  Widget _buildSummaryCard(BuildContext context, String title, String value, String count, Color color, IconData icon) {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: AppColors.getSurface(context),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: color.withValues(alpha: 0.3), width: 1.2),
       ),
@@ -160,7 +163,7 @@ class LedgerScreen extends StatelessWidget {
               const SizedBox(height: 6),
               Text(
                 value,
-                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w800, color: AppColors.textPrimary),
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800, color: AppColors.getTextPrimary(context)),
               ),
               const SizedBox(height: 4),
               Text(count, style: const TextStyle(fontSize: 11, color: AppColors.textSecondary)),

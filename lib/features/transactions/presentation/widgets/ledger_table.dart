@@ -36,9 +36,9 @@ class LedgerTable extends StatelessWidget {
       return Container(
         padding: const EdgeInsets.all(48),
         decoration: BoxDecoration(
-          color: AppColors.surface,
+          color: AppColors.getSurface(context),
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: AppColors.divider),
+          border: Border.all(color: AppColors.getDivider(context)),
         ),
         child: Center(
           child: Column(
@@ -63,16 +63,16 @@ class LedgerTable extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: AppColors.getSurface(context),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.divider),
+        border: Border.all(color: AppColors.getDivider(context)),
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12),
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: DataTable(
-            headingRowColor: WidgetStateProperty.all(AppColors.tableHeaderBg),
+            headingRowColor: WidgetStateProperty.all(AppColors.getTableHeaderBg(context)),
             dataRowMaxHeight: 64,
             dataRowMinHeight: 56,
             horizontalMargin: 16,
@@ -105,7 +105,7 @@ class LedgerTable extends StatelessWidget {
                   DataCell(
                     Text(
                       DateFormatter.formatShort(t.date),
-                      style: const TextStyle(fontSize: 12, color: AppColors.textLight),
+                      style: TextStyle(fontSize: 12, color: AppColors.getTextPrimary(context)),
                     ),
                   ),
                   // Category
@@ -122,7 +122,7 @@ class LedgerTable extends StatelessWidget {
                       width: 220,
                       child: Text(
                         t.description,
-                        style: const TextStyle(fontSize: 12, color: AppColors.textPrimary, fontWeight: FontWeight.w500),
+                        style: TextStyle(fontSize: 12, color: AppColors.getTextPrimary(context), fontWeight: FontWeight.w500),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -188,7 +188,7 @@ class LedgerTable extends StatelessWidget {
                   DataCell(
                     Text(
                       t.sourceAccount,
-                      style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: AppColors.textPrimary),
+                      style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: AppColors.getTextPrimary(context)),
                     ),
                   ),
                   // Actions (Enforced by activeUser permissions)

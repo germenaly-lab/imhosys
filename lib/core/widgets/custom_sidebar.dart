@@ -49,11 +49,11 @@ class CustomSidebar extends StatelessWidget {
                     children: [
                       Text(
                         AppTranslations.get('appTitle', isArabic),
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w900,
                           letterSpacing: 0.5,
-                          color: AppColors.textPrimary,
+                          color: AppColors.getTextPrimary(context),
                         ),
                       ),
                       Text(
@@ -188,7 +188,7 @@ class CustomSidebar extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 13,
                       fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-                      color: isSelected ? AppColors.primary : AppColors.textSecondary,
+                      color: isSelected ? AppColors.primary : AppColors.getTextSecondary(context),
                     ),
                   ),
                 ),

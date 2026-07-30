@@ -110,7 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       width: isMobile ? double.infinity : 420,
                       padding: EdgeInsets.all(isMobile ? 20 : 28),
                       decoration: BoxDecoration(
-                        color: AppColors.surface,
+                        color: AppColors.getSurface(context),
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(
                           color: AppColors.primary.withValues(alpha: 0.35),
@@ -132,11 +132,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           children: [
                             Text(
                               isArabic ? 'تسجيل الدخول إلى النظام' : 'SYSTEM PORTAL LOGIN',
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 13,
                                 fontWeight: FontWeight.w900,
                                 letterSpacing: 1.0,
-                                color: AppColors.textPrimary,
+                                color: AppColors.getTextPrimary(context),
                               ),
                             ),
                             const SizedBox(height: 4),
@@ -157,16 +157,16 @@ class _LoginScreenState extends State<LoginScreen> {
                             Container(
                               padding: const EdgeInsets.symmetric(horizontal: 12),
                               decoration: BoxDecoration(
-                                color: AppColors.background,
+                                color: AppColors.getBackground(context),
                                 borderRadius: BorderRadius.circular(10),
-                                border: Border.all(color: AppColors.divider),
+                                border: Border.all(color: AppColors.getDivider(context)),
                               ),
                               child: DropdownButtonHideUnderline(
                                 child: DropdownButton<String>(
                                   value: _selectedUserId,
-                                  dropdownColor: AppColors.surface,
+                                  dropdownColor: AppColors.getSurface(context),
                                   isExpanded: true,
-                                  style: const TextStyle(fontSize: 13, color: AppColors.textPrimary, fontWeight: FontWeight.bold),
+                                  style: TextStyle(fontSize: 13, color: AppColors.getTextPrimary(context), fontWeight: FontWeight.bold),
                                   icon: const Icon(Icons.arrow_drop_down, color: AppColors.primaryLight),
                                   items: users.map((u) {
                                     return DropdownMenuItem<String>(
@@ -208,7 +208,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             TextFormField(
                               controller: _passwordController,
                               obscureText: _obscurePassword,
-                              style: const TextStyle(color: AppColors.textPrimary, fontSize: 14, letterSpacing: 1.2),
+                              style: TextStyle(color: AppColors.getTextPrimary(context), fontSize: 14, letterSpacing: 1.2),
                               decoration: InputDecoration(
                                 hintText: isArabic ? 'ادخل كلمة المرور' : 'Enter Password',
                                 prefixIcon: const Icon(Icons.lock_outline_rounded, size: 18, color: AppColors.primaryLight),

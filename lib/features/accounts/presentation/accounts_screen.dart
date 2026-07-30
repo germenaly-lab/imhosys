@@ -95,9 +95,9 @@ class AccountsScreen extends StatelessWidget {
                   return Container(
                     padding: const EdgeInsets.all(18),
                     decoration: BoxDecoration(
-                      color: AppColors.surface,
+                      color: AppColors.getSurface(context),
                       borderRadius: BorderRadius.circular(14),
-                      border: Border.all(color: AppColors.divider),
+                      border: Border.all(color: AppColors.getDivider(context)),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -119,7 +119,7 @@ class AccountsScreen extends StatelessWidget {
                                 children: [
                                   Text(
                                     acc.code,
-                                    style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+                                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.getTextPrimary(context)),
                                   ),
                                   Text(
                                     acc.responsiblePerson,
@@ -134,17 +134,17 @@ class AccountsScreen extends StatelessWidget {
                         const SizedBox(height: 12),
                         Text(
                           acc.name,
-                          style: const TextStyle(fontSize: 12, color: AppColors.textLight),
+                          style: TextStyle(fontSize: 12, color: AppColors.getTextPrimary(context)),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
                         const Spacer(),
-                        const Divider(color: AppColors.divider, height: 12),
+                        Divider(color: AppColors.getDivider(context), height: 12),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             const Text('Transactions:', style: TextStyle(fontSize: 11, color: AppColors.textSecondary)),
-                            Text('${accTxns.length} Recorded', style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+                            Text('${accTxns.length} Recorded', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: AppColors.getTextPrimary(context))),
                           ],
                         ),
                         const SizedBox(height: 4),
@@ -219,18 +219,18 @@ class _InternalTransferModalState extends State<_InternalTransferModal> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Row(
+            Row(
               children: [
-                Icon(Icons.swap_horiz_rounded, color: AppColors.secondary, size: 24),
-                SizedBox(width: 10),
-                Text('Internal Vault Transfer', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+                const Icon(Icons.swap_horiz_rounded, color: AppColors.secondary, size: 24),
+                const SizedBox(width: 10),
+                Text('Internal Vault Transfer', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.getTextPrimary(context))),
               ],
             ),
-            const Divider(color: AppColors.divider, height: 28),
+            Divider(color: AppColors.getDivider(context), height: 28),
             DropdownButtonFormField<String>(
               initialValue: _fromAccount,
-              dropdownColor: AppColors.surface,
-              style: const TextStyle(color: AppColors.textPrimary),
+              dropdownColor: AppColors.getSurface(context),
+              style: TextStyle(color: AppColors.getTextPrimary(context)),
               decoration: const InputDecoration(labelText: 'From Vault / Account'),
               items: accountCodes.map((a) => DropdownMenuItem(value: a, child: Text(a))).toList(),
               onChanged: (val) => setState(() => _fromAccount = val!),
@@ -238,8 +238,8 @@ class _InternalTransferModalState extends State<_InternalTransferModal> {
             const SizedBox(height: 16),
             DropdownButtonFormField<String>(
               initialValue: _toAccount,
-              dropdownColor: AppColors.surface,
-              style: const TextStyle(color: AppColors.textPrimary),
+              dropdownColor: AppColors.getSurface(context),
+              style: TextStyle(color: AppColors.getTextPrimary(context)),
               decoration: const InputDecoration(labelText: 'To Vault / Account'),
               items: accountCodes.map((a) => DropdownMenuItem(value: a, child: Text(a))).toList(),
               onChanged: (val) => setState(() => _toAccount = val!),
@@ -248,13 +248,13 @@ class _InternalTransferModalState extends State<_InternalTransferModal> {
             TextField(
               controller: _amountController,
               keyboardType: TextInputType.number,
-              style: const TextStyle(color: AppColors.textPrimary),
+              style: TextStyle(color: AppColors.getTextPrimary(context)),
               decoration: const InputDecoration(labelText: 'Transfer Amount', prefixText: 'EGP / EUR / USD '),
             ),
             const SizedBox(height: 16),
             TextField(
               controller: _notesController,
-              style: const TextStyle(color: AppColors.textPrimary),
+              style: TextStyle(color: AppColors.getTextPrimary(context)),
               decoration: const InputDecoration(labelText: 'Transfer Reason / Notes'),
             ),
             const SizedBox(height: 24),

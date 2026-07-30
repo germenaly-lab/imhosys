@@ -146,22 +146,22 @@ class DashboardScreen extends StatelessWidget {
                       // Pie Chart - Expense Breakdown by Category
                       Expanded(
                         flex: 5,
-                        child: _buildPieChartCard(categoryEgpMap, isArabic),
+                        child: _buildPieChartCard(context, categoryEgpMap, isArabic),
                       ),
                       const SizedBox(width: 20),
                       // Top 5 Most Expensive Engineering Projects
                       Expanded(
                         flex: 4,
-                        child: _buildTopProjectsCard(top5Projects, isArabic),
+                        child: _buildTopProjectsCard(context, top5Projects, isArabic),
                       ),
                     ],
                   )
                 else
                   Column(
                     children: [
-                      _buildPieChartCard(categoryEgpMap, isArabic),
+                      _buildPieChartCard(context, categoryEgpMap, isArabic),
                       const SizedBox(height: 16),
-                      _buildTopProjectsCard(top5Projects, isArabic),
+                      _buildTopProjectsCard(context, top5Projects, isArabic),
                     ],
                   ),
 
@@ -172,20 +172,20 @@ class DashboardScreen extends StatelessWidget {
                   height: 280,
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: AppColors.surface,
+                    color: AppColors.getSurface(context),
                     borderRadius: BorderRadius.circular(14),
-                    border: Border.all(color: AppColors.divider),
+                    border: Border.all(color: AppColors.getDivider(context)),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         AppTranslations.get('cashOutflowTrend', isArabic),
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.bold,
                           letterSpacing: 0.8,
-                          color: AppColors.textPrimary,
+                          color: AppColors.getTextPrimary(context),
                         ),
                       ),
                       const SizedBox(height: 20),
@@ -252,14 +252,14 @@ class DashboardScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildPieChartCard(Map<String, double> categoryEgpMap, bool isArabic) {
+  Widget _buildPieChartCard(BuildContext context, Map<String, double> categoryEgpMap, bool isArabic) {
     return Container(
       height: 380,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: AppColors.getSurface(context),
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: AppColors.divider),
+        border: Border.all(color: AppColors.getDivider(context)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -269,11 +269,11 @@ class DashboardScreen extends StatelessWidget {
             children: [
               Text(
                 AppTranslations.get('expenseDist', isArabic),
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 0.8,
-                  color: AppColors.textPrimary,
+                  color: AppColors.getTextPrimary(context),
                 ),
               ),
               const Icon(Icons.pie_chart_outline_rounded, color: AppColors.secondary, size: 20),
@@ -314,7 +314,7 @@ class DashboardScreen extends StatelessWidget {
                             Expanded(
                               child: Text(
                                 AppCategories.getLocalizedName(entry.key, isArabic),
-                                style: const TextStyle(fontSize: 11, color: AppColors.textPrimary),
+                                style: TextStyle(fontSize: 11, color: AppColors.getTextPrimary(context)),
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -332,14 +332,14 @@ class DashboardScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildTopProjectsCard(List<MapEntry<String, double>> top5Projects, bool isArabic) {
+  Widget _buildTopProjectsCard(BuildContext context, List<MapEntry<String, double>> top5Projects, bool isArabic) {
     return Container(
       height: 380,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: AppColors.getSurface(context),
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: AppColors.divider),
+        border: Border.all(color: AppColors.getDivider(context)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -349,11 +349,11 @@ class DashboardScreen extends StatelessWidget {
             children: [
               Text(
                 AppTranslations.get('topProjects', isArabic),
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 0.8,
-                  color: AppColors.textPrimary,
+                  color: AppColors.getTextPrimary(context),
                 ),
               ),
               const Icon(Icons.leaderboard_rounded, color: AppColors.usd, size: 20),
@@ -363,7 +363,7 @@ class DashboardScreen extends StatelessWidget {
           Expanded(
             child: ListView.separated(
               itemCount: top5Projects.length,
-              separatorBuilder: (_, _) => const Divider(color: AppColors.divider, height: 16),
+              separatorBuilder: (_, _) => Divider(color: AppColors.getDivider(context), height: 16),
               itemBuilder: (context, idx) {
                 final proj = top5Projects[idx];
                 return Row(
@@ -390,10 +390,10 @@ class DashboardScreen extends StatelessWidget {
                         children: [
                           Text(
                             proj.key,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.bold,
-                              color: AppColors.textPrimary,
+                              color: AppColors.getTextPrimary(context),
                             ),
                             overflow: TextOverflow.ellipsis,
                           ),
