@@ -3,12 +3,39 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../features/models/user_model.dart';
 import '../../features/models/transaction_model.dart';
+import '../constants/app_projects.dart';
 
 class LocalPersistenceService {
   static const String _usersKey = 'imh_persisted_users_v1';
   static const String _activeUserKey = 'imh_active_user_id_v1';
   static const String _transactionsKey = 'imh_persisted_transactions_v1';
   static const String _themeModeKey = 'imh_persisted_theme_mode_v1';
+  static const String _projectsKey = 'imh_persisted_projects_v1';
+
+  // PROJECTS persistence
+  static Future<void> saveProjects(List<EngineeringProject> projects) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final encoded = jsonEncode(projects.map((p) => p.toJson()).toList());
+      await prefs.setString(_projectsKey, encoded);
+    } catch (e) {
+      debugPrint('Error saving projects to local storage: $e');
+    }
+  }
+
+  static Future<List<EngineeringProject>?> loadProjects() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final raw = prefs.getString(_projectsKey);
+      if (raw != null && raw.isNotEmpty) {
+        final List decoded = jsonDecode(raw);
+        return decoded.map((item) => EngineeringProject.fromJson(Map<String, dynamic>.from(item as Map))).toList();
+      }
+    } catch (e) {
+      debugPrint('Error loading projects from local storage: $e');
+    }
+    return null;
+  }
 
   // USERS persistence
   static Future<void> saveUsers(List<UserModel> users) async {

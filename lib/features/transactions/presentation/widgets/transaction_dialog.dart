@@ -95,7 +95,7 @@ class _TransactionDialogState extends State<TransactionDialog> {
     final isEditing = widget.transactionToEdit != null;
 
     return Dialog(
-      backgroundColor: AppColors.surface,
+      backgroundColor: AppColors.getSurface(context),
       insetPadding: const EdgeInsets.symmetric(horizontal: 40, vertical: 24),
       child: Container(
         width: 680,
