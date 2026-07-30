@@ -59,6 +59,26 @@ class UserPermission extends Equatable {
     );
   }
 
+  Map<String, dynamic> toJson() => {
+        'canViewLedger': canViewLedger,
+        'canAddTransaction': canAddTransaction,
+        'canEditTransaction': canEditTransaction,
+        'canDeleteTransaction': canDeleteTransaction,
+        'canImportExportExcel': canImportExportExcel,
+        'canExecuteTransfer': canExecuteTransfer,
+        'canManageUsers': canManageUsers,
+      };
+
+  factory UserPermission.fromJson(Map<String, dynamic> json) => UserPermission(
+        canViewLedger: json['canViewLedger'] as bool? ?? true,
+        canAddTransaction: json['canAddTransaction'] as bool? ?? true,
+        canEditTransaction: json['canEditTransaction'] as bool? ?? false,
+        canDeleteTransaction: json['canDeleteTransaction'] as bool? ?? false,
+        canImportExportExcel: json['canImportExportExcel'] as bool? ?? false,
+        canExecuteTransfer: json['canExecuteTransfer'] as bool? ?? false,
+        canManageUsers: json['canManageUsers'] as bool? ?? false,
+      );
+
   @override
   List<Object?> get props => [
         canViewLedger,
@@ -105,6 +125,24 @@ class UserModel extends Equatable {
       permissions: permissions ?? this.permissions,
     );
   }
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+        'email': email,
+        'password': password,
+        'entityCode': entityCode,
+        'permissions': permissions.toJson(),
+      };
+
+  factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
+        id: json['id'] as String,
+        name: json['name'] as String,
+        email: json['email'] as String,
+        password: json['password'] as String? ?? 'Imh@2026!Secured',
+        entityCode: json['entityCode'] as String,
+        permissions: UserPermission.fromJson(Map<String, dynamic>.from(json['permissions'] as Map)),
+      );
 
   @override
   List<Object?> get props => [id, name, email, password, entityCode, permissions];

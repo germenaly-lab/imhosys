@@ -3,6 +3,7 @@ import 'user_event.dart';
 import 'user_state.dart';
 import '../../models/user_model.dart';
 import '../../../core/services/firebase_service.dart';
+import '../../../core/services/local_persistence_service.dart';
 
 class UserBloc extends Bloc<UserEvent, UserState> {
   UserBloc() : super(UserInitial()) {
@@ -13,46 +14,59 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     on<DeleteUser>(_onDeleteUser);
   }
 
-  void _onLoadUsers(LoadUsers event, Emitter<UserState> emit) {
-    final emadAdmin = const UserModel(
-      id: 'USR-001',
-      name: 'Eng. Emad',
-      email: 'emad@imh-solutions.com',
-      entityCode: 'EM',
-      password: 'Imh@2026!Secured',
-      permissions: UserPermission.adminPermissions,
-    );
+  Future<void> _onLoadUsers(LoadUsers event, Emitter<UserState> emit) async {
+    List<UserModel>? loaded = await LocalPersistenceService.loadUsers();
 
-    final mostafaAdmin = const UserModel(
-      id: 'USR-002',
-      name: 'Eng. Mostafa',
-      email: 'mostafa@imh-solutions.com',
-      entityCode: 'MO',
-      password: 'Imh@2026!Secured',
-      permissions: UserPermission.adminPermissions,
-    );
+    if (loaded == null || loaded.isEmpty) {
+      final emadAdmin = const UserModel(
+        id: 'USR-001',
+        name: 'Eng. Emad',
+        email: 'emad@imh-solutions.com',
+        entityCode: 'EM',
+        password: 'Imh@2026!Secured',
+        permissions: UserPermission.adminPermissions,
+      );
 
-    final badawyAdmin = const UserModel(
-      id: 'USR-003',
-      name: 'Eng. Badawy',
-      email: 'badawy@imh-solutions.com',
-      entityCode: 'BD',
-      password: 'Imh@2026!Secured',
-      permissions: UserPermission.adminPermissions,
-    );
+      final mostafaAdmin = const UserModel(
+        id: 'USR-002',
+        name: 'Eng. Mostafa',
+        email: 'mostafa@imh-solutions.com',
+        entityCode: 'MO',
+        password: 'Imh@2026!Secured',
+        permissions: UserPermission.adminPermissions,
+      );
 
-    final hanafyUser = const UserModel(
-      id: 'USR-004',
-      name: 'Hanafy',
-      email: 'hanafy@imh-solutions.com',
-      entityCode: 'HN',
-      password: 'Imh@2026!Secured',
-      permissions: UserPermission.standardUserPermissions,
+      final badawyAdmin = const UserModel(
+        id: 'USR-003',
+        name: 'Eng. Badawy',
+        email: 'badawy@imh-solutions.com',
+        entityCode: 'BD',
+        password: 'Imh@2026!Secured',
+        permissions: UserPermission.adminPermissions,
+      );
+
+      final hanafyUser = const UserModel(
+        id: 'USR-004',
+        name: 'Hanafy',
+        email: 'hanafy@imh-solutions.com',
+        entityCode: 'HN',
+        password: 'Imh@2026!Secured',
+        permissions: UserPermission.standardUserPermissions,
+      );
+
+      loaded = [emadAdmin, mostafaAdmin, badawyAdmin, hanafyUser];
+      await LocalPersistenceService.saveUsers(loaded);
+    }
+
+    final activeId = await LocalPersistenceService.loadActiveUserId();
+    final activeUser = loaded.firstWhere(
+      (u) => u.id == activeId,
+      orElse: () => loaded!.first,
     );
 
     emit(UserLoaded(
-      users: [emadAdmin, mostafaAdmin, badawyAdmin, hanafyUser],
-      activeUser: emadAdmin,
+      users: loaded,
+      activeUser: activeUser,
     ));
   }
 
@@ -64,6 +78,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         orElse: () => currentState.activeUser,
       );
       emit(currentState.copyWith(activeUser: selected));
+      LocalPersistenceService.saveActiveUserId(selected.id);
     }
   }
 
@@ -89,7 +104,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         activeUser: updatedActive,
       ));
 
-      // Firebase sync
+      // Local & Firebase sync
+      LocalPersistenceService.saveUsers(updatedUsers);
       FirebaseService.instance.saveUser(event.user);
     }
   }
@@ -115,6 +131,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         users: updatedUsers,
         activeUser: updatedActive,
       ));
+
+      LocalPersistenceService.saveUsers(updatedUsers);
     }
   }
 
@@ -131,6 +149,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         users: updatedUsers,
         activeUser: newActive,
       ));
+
+      LocalPersistenceService.saveUsers(updatedUsers);
     }
   }
 }

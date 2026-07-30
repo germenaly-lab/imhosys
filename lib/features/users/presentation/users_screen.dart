@@ -100,7 +100,7 @@ class UsersScreen extends StatelessWidget {
                   gradient: LinearGradient(
                     colors: [
                       AppColors.primary.withValues(alpha: 0.2),
-                      AppColors.surface,
+                      AppColors.getSurface(context),
                     ],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
@@ -167,7 +167,7 @@ class UsersScreen extends StatelessWidget {
                   return Container(
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      color: AppColors.surface,
+                      color: AppColors.getSurface(context),
                       borderRadius: BorderRadius.circular(14),
                       border: Border.all(
                         color: isActive ? AppColors.primary : AppColors.divider,
@@ -373,7 +373,7 @@ class UsersScreen extends StatelessWidget {
     showDialog(
       context: context,
       builder: (dialogCtx) => AlertDialog(
-        backgroundColor: AppColors.surface,
+        backgroundColor: AppColors.getSurface(context),
         title: Row(
           children: [
             const Icon(Icons.warning_amber_rounded, color: AppColors.error),
@@ -450,7 +450,7 @@ class _PasswordGeneratorModalState extends State<_PasswordGeneratorModal> {
     final isArabic = context.watch<LocaleCubit>().isArabic;
 
     return Dialog(
-      backgroundColor: AppColors.surface,
+      backgroundColor: AppColors.getSurface(context),
       child: Container(
         width: 540,
         padding: const EdgeInsets.all(24),
@@ -501,7 +501,7 @@ class _PasswordGeneratorModalState extends State<_PasswordGeneratorModal> {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: AppColors.background,
+                  color: AppColors.getBackground(context),
                   borderRadius: BorderRadius.circular(10),
                   border: Border.all(color: AppColors.primary.withValues(alpha: 0.4)),
                 ),
@@ -549,7 +549,7 @@ class _PasswordGeneratorModalState extends State<_PasswordGeneratorModal> {
                 children: [
                   Text(
                     isArabic ? 'طول كلمة المرور: $_length حرف' : 'Password Length: $_length chars',
-                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13),
+                    style: TextStyle(color: AppColors.getTextPrimary(context), fontWeight: FontWeight.bold, fontSize: 13),
                   ),
                   StatusBadge(
                     text: _length >= 16 ? 'ULTRA SECURE' : (_length >= 12 ? 'STRONG' : 'WEAK'),
@@ -615,7 +615,7 @@ class _PasswordGeneratorModalState extends State<_PasswordGeneratorModal> {
               Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: AppColors.background,
+                  color: AppColors.getBackground(context),
                   borderRadius: BorderRadius.circular(10),
                   border: Border.all(color: AppColors.warning.withValues(alpha: 0.4)),
                 ),
@@ -699,7 +699,7 @@ class _CreateUserModalState extends State<_CreateUserModal> {
     final textColor = Theme.of(context).colorScheme.onSurface;
 
     return Dialog(
-      backgroundColor: AppColors.surface,
+      backgroundColor: AppColors.getSurface(context),
       child: Container(
         width: 500,
         padding: const EdgeInsets.all(24),
@@ -734,7 +734,7 @@ class _CreateUserModalState extends State<_CreateUserModal> {
             // Permission Level Selection Dropdown
             DropdownButtonFormField<bool>(
               initialValue: _isAdmin,
-              dropdownColor: AppColors.surface,
+              dropdownColor: AppColors.getSurface(context),
               style: TextStyle(color: textColor, fontSize: 13),
               decoration: InputDecoration(
                 labelText: isArabic ? 'نوع حساب التخويل والصلاحيات *' : 'Permission Level & Role *',
@@ -892,7 +892,7 @@ class _ChangePasswordModalState extends State<_ChangePasswordModal> {
     final isArabic = context.watch<LocaleCubit>().isArabic;
 
     return Dialog(
-      backgroundColor: AppColors.surface,
+      backgroundColor: AppColors.getSurface(context),
       child: Container(
         width: 480,
         padding: const EdgeInsets.all(24),
@@ -1047,7 +1047,7 @@ class _EditPermissionsModalState extends State<_EditPermissionsModal> {
     final isArabic = context.watch<LocaleCubit>().isArabic;
 
     return Dialog(
-      backgroundColor: AppColors.surface,
+      backgroundColor: AppColors.getSurface(context),
       child: Container(
         width: 520,
         padding: const EdgeInsets.all(24),

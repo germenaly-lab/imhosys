@@ -137,7 +137,7 @@ class _MainShellScreenState extends State<MainShellScreen> {
       child: Scaffold(
         drawer: isMobile
             ? Drawer(
-                backgroundColor: AppColors.surface,
+                backgroundColor: AppColors.getSurface(context),
                 child: CustomSidebar(
                   selectedIndex: _currentNavIndex,
                   onItemSelected: (index) {
@@ -151,9 +151,9 @@ class _MainShellScreenState extends State<MainShellScreen> {
             : null,
         bottomNavigationBar: isMobile
             ? Container(
-                decoration: const BoxDecoration(
-                  color: AppColors.surface,
-                  border: Border(top: BorderSide(color: AppColors.divider, width: 1)),
+                decoration: BoxDecoration(
+                  color: AppColors.getSurface(context),
+                  border: Border(top: BorderSide(color: AppColors.getDivider(context), width: 1)),
                 ),
                 child: BottomNavigationBar(
                   currentIndex: _currentNavIndex > 5 ? 0 : _currentNavIndex,
@@ -162,7 +162,7 @@ class _MainShellScreenState extends State<MainShellScreen> {
                       _currentNavIndex = index;
                     });
                   },
-                  backgroundColor: AppColors.surface,
+                  backgroundColor: AppColors.getSurface(context),
                   selectedItemColor: AppColors.primaryLight,
                   unselectedItemColor: AppColors.textSecondary,
                   type: BottomNavigationBarType.fixed,

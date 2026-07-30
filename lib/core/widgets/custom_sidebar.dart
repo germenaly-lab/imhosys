@@ -21,11 +21,11 @@ class CustomSidebar extends StatelessWidget {
 
     return Container(
       width: 260,
-      decoration: const BoxDecoration(
-        color: AppColors.surface,
+      decoration: BoxDecoration(
+        color: AppColors.getSurface(context),
         border: Border(
-          right: BorderSide(color: AppColors.divider, width: 1),
-          left: BorderSide(color: AppColors.divider, width: 1),
+          right: BorderSide(color: AppColors.getDivider(context), width: 1),
+          left: BorderSide(color: AppColors.getDivider(context), width: 1),
         ),
       ),
       child: Column(
@@ -33,8 +33,8 @@ class CustomSidebar extends StatelessWidget {
           // Company Header
           Container(
             padding: const EdgeInsets.all(24),
-            decoration: const BoxDecoration(
-              border: Border(bottom: BorderSide(color: AppColors.divider, width: 1)),
+            decoration: BoxDecoration(
+              border: Border(bottom: BorderSide(color: AppColors.getDivider(context), width: 1)),
             ),
             child: Row(
               children: [
@@ -111,9 +111,9 @@ class CustomSidebar extends StatelessWidget {
             margin: const EdgeInsets.all(12),
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: AppColors.background.withValues(alpha: 0.6),
+              color: AppColors.getBackground(context).withValues(alpha: 0.6),
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: AppColors.divider),
+              border: Border.all(color: AppColors.getDivider(context)),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

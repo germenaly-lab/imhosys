@@ -25,7 +25,7 @@ class CompanyLogo extends StatelessWidget {
           height: size,
           padding: EdgeInsets.all(size * 0.12),
           decoration: BoxDecoration(
-            color: AppColors.surface,
+            color: AppColors.getSurface(context),
             shape: BoxShape.circle,
             border: Border.all(
               color: AppColors.primary.withValues(alpha: 0.6),

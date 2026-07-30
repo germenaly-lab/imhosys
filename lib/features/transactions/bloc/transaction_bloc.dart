@@ -3,6 +3,7 @@ import 'transaction_event.dart';
 import 'transaction_state.dart';
 import '../../models/transaction_model.dart';
 import '../../seed/mock_data_generator.dart';
+import '../../../core/services/local_persistence_service.dart';
 
 class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
   TransactionBloc() : super(TransactionInitial()) {
@@ -15,10 +16,15 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
     on<ImportTransactions>(_onImportTransactions);
   }
 
-  void _onLoadTransactions(LoadTransactions event, Emitter<TransactionState> emit) {
+  Future<void> _onLoadTransactions(LoadTransactions event, Emitter<TransactionState> emit) async {
     emit(TransactionLoading());
     try {
-      final initialData = MockDataGenerator.getInitialTransactions();
+      List<TransactionModel>? initialData = await LocalPersistenceService.loadTransactions();
+      if (initialData == null || initialData.isEmpty) {
+        initialData = MockDataGenerator.getInitialTransactions();
+        await LocalPersistenceService.saveTransactions(initialData);
+      }
+
       emit(TransactionLoaded(
         allTransactions: initialData,
         filteredTransactions: initialData,
@@ -44,6 +50,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
         allTransactions: updatedAll,
         filteredTransactions: updatedFiltered,
       ));
+      LocalPersistenceService.saveTransactions(updatedAll);
     }
   }
 
@@ -65,6 +72,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
         allTransactions: updatedAll,
         filteredTransactions: updatedFiltered,
       ));
+      LocalPersistenceService.saveTransactions(updatedAll);
     }
   }
 
@@ -84,6 +92,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
         allTransactions: updatedAll,
         filteredTransactions: updatedFiltered,
       ));
+      LocalPersistenceService.saveTransactions(updatedAll);
     }
   }
 
@@ -142,6 +151,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
         allTransactions: updatedAll,
         filteredTransactions: updatedFiltered,
       ));
+      LocalPersistenceService.saveTransactions(updatedAll);
     }
   }
 
