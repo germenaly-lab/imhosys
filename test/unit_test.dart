@@ -8,8 +8,11 @@ import 'package:imh_erp/features/users/bloc/user_bloc.dart';
 import 'package:imh_erp/features/users/bloc/user_event.dart';
 import 'package:imh_erp/features/users/bloc/user_state.dart';
 import 'package:imh_erp/core/localization/locale_cubit.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences.setMockInitialValues({});
   group('LocaleCubit Tests', () {
     test('Initial locale is English (en)', () {
       final cubit = LocaleCubit();
