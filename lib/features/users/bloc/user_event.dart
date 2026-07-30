@@ -46,3 +46,13 @@ class DeleteUser extends UserEvent {
   @override
   List<Object?> get props => [userId];
 }
+
+class SyncUsersInternal extends UserEvent {
+  final List<UserModel> users;
+  final UserModel activeUser;
+
+  const SyncUsersInternal(this.users, this.activeUser);
+
+  @override
+  List<Object?> get props => [users, activeUser];
+}

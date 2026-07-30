@@ -12,6 +12,12 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     on<AddUser>(_onAddUser);
     on<UpdateUserPermissions>(_onUpdateUserPermissions);
     on<DeleteUser>(_onDeleteUser);
+    on<SyncUsersInternal>(_onSyncUsersInternal);
+  }
+
+  void _onSyncUsersInternal(SyncUsersInternal event, Emitter<UserState> emit) {
+    emit(UserLoaded(users: event.users, activeUser: event.activeUser));
+    LocalPersistenceService.saveUsers(event.users);
   }
 
   Future<void> _onLoadUsers(LoadUsers event, Emitter<UserState> emit) async {
@@ -68,6 +74,30 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       users: loaded,
       activeUser: activeUser,
     ));
+
+    // Listen to real-time Firebase users stream for multi-device sync
+    FirebaseService.instance.getUsersStream().listen((remoteUsers) {
+      if (remoteUsers.isNotEmpty && state is UserLoaded) {
+        final currentState = state as UserLoaded;
+        final mergedUsers = List<UserModel>.from(currentState.users);
+
+        for (final remote in remoteUsers) {
+          final idx = mergedUsers.indexWhere((u) => u.id == remote.id || u.email == remote.email);
+          if (idx >= 0) {
+            mergedUsers[idx] = remote;
+          } else {
+            mergedUsers.add(remote);
+          }
+        }
+
+        final updatedActive = mergedUsers.firstWhere(
+          (u) => u.id == currentState.activeUser.id,
+          orElse: () => currentState.activeUser,
+        );
+
+        add(SyncUsersInternal(mergedUsers, updatedActive));
+      }
+    });
   }
 
   void _onSwitchActiveUser(SwitchActiveUser event, Emitter<UserState> emit) {

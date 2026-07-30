@@ -129,4 +129,38 @@ class FirebaseService {
       debugPrint('⚠️ Firebase saveUser error: $e');
     }
   }
+
+  /// Sync users stream from Firestore 'users' collection
+  Stream<List<UserModel>> getUsersStream() {
+    if (!_isInitialized) {
+      return const Stream.empty();
+    }
+
+    return firestore
+        .collection('users')
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs.map((doc) {
+        final data = doc.data();
+        final permissionsMap = Map<String, dynamic>.from((data['permissions'] as Map?) ?? {});
+
+        return UserModel(
+          id: doc.id,
+          name: (data['name'] as String?) ?? 'User',
+          email: (data['email'] as String?) ?? '',
+          password: (data['password'] as String?) ?? '',
+          entityCode: (data['entityCode'] as String?) ?? 'US',
+          permissions: UserPermission(
+            canViewLedger: (permissionsMap['canViewLedger'] as bool?) ?? true,
+            canAddTransaction: (permissionsMap['canAddTransaction'] as bool?) ?? true,
+            canEditTransaction: (permissionsMap['canEditTransaction'] as bool?) ?? false,
+            canDeleteTransaction: (permissionsMap['canDeleteTransaction'] as bool?) ?? false,
+            canImportExportExcel: (permissionsMap['canImportExportExcel'] as bool?) ?? false,
+            canExecuteTransfer: (permissionsMap['canExecuteTransfer'] as bool?) ?? false,
+            canManageUsers: (permissionsMap['canManageUsers'] as bool?) ?? false,
+          ),
+        );
+      }).toList();
+    });
+  }
 }
