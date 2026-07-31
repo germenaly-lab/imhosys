@@ -24,7 +24,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     List<UserModel>? loaded = await LocalPersistenceService.loadUsers();
 
     if (loaded == null || loaded.isEmpty) {
-      final emadAdmin = const UserModel(
+      final masterAdmin = const UserModel(
         id: 'USR-001',
         name: 'Eng. Emad',
         email: 'emad@imh-solutions.com',
@@ -33,34 +33,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         permissions: UserPermission.adminPermissions,
       );
 
-      final mostafaAdmin = const UserModel(
-        id: 'USR-002',
-        name: 'Eng. Mostafa',
-        email: 'mostafa@imh-solutions.com',
-        entityCode: 'MO',
-        password: 'Imh@2026!Secured',
-        permissions: UserPermission.adminPermissions,
-      );
-
-      final badawyAdmin = const UserModel(
-        id: 'USR-003',
-        name: 'Eng. Badawy',
-        email: 'badawy@imh-solutions.com',
-        entityCode: 'BD',
-        password: 'Imh@2026!Secured',
-        permissions: UserPermission.adminPermissions,
-      );
-
-      final hanafyUser = const UserModel(
-        id: 'USR-004',
-        name: 'Hanafy',
-        email: 'hanafy@imh-solutions.com',
-        entityCode: 'HN',
-        password: 'Imh@2026!Secured',
-        permissions: UserPermission.standardUserPermissions,
-      );
-
-      loaded = [emadAdmin, mostafaAdmin, badawyAdmin, hanafyUser];
+      loaded = [masterAdmin];
       await LocalPersistenceService.saveUsers(loaded);
     }
 

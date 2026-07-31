@@ -6,8 +6,8 @@ import '../../features/models/transaction_model.dart';
 import '../constants/app_projects.dart';
 
 class LocalPersistenceService {
-  static const String _usersKey = 'imh_persisted_users_v1';
-  static const String _activeUserKey = 'imh_active_user_id_v1';
+  static const String _usersKey = 'imh_persisted_users_v2';
+  static const String _activeUserKey = 'imh_active_user_id_v2';
   static const String _transactionsKey = 'imh_persisted_transactions_v1';
   static const String _themeModeKey = 'imh_persisted_theme_mode_v1';
   static const String _projectsKey = 'imh_persisted_projects_v1';

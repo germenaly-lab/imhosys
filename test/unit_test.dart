@@ -43,30 +43,16 @@ void main() {
       userBloc.close();
     });
 
-    test('Initial state loads pre-seeded Admin and User accounts', () async {
+    test('Initial state loads pre-seeded Master Admin account', () async {
       userBloc.add(LoadUsers());
       await expectLater(
         userBloc.stream,
-        emits(isA<UserLoaded>().having((s) => s.users.length, 'users length', 4)),
+        emits(isA<UserLoaded>().having((s) => s.users.length, 'users length', 1)),
       );
 
       final state = userBloc.state as UserLoaded;
       expect(state.activeUser.permissions.canManageUsers, isTrue);
       expect(state.activeUser.name, contains('Emad'));
-    });
-
-    test('Switching active user persona changes activeUser', () async {
-      userBloc.add(LoadUsers());
-      await userBloc.stream.firstWhere((s) => s is UserLoaded);
-
-      userBloc.add(const SwitchActiveUser('USR-004'));
-      await expectLater(
-        userBloc.stream,
-        emits(isA<UserLoaded>().having((s) => s.activeUser.id, 'active user id', 'USR-004')),
-      );
-
-      final state = userBloc.state as UserLoaded;
-      expect(state.activeUser.permissions.canManageUsers, isFalse);
     });
   });
 
