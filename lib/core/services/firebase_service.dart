@@ -130,6 +130,18 @@ class FirebaseService {
     }
   }
 
+  /// Delete User from Firestore
+  Future<void> deleteUser(String id) async {
+    if (!_isInitialized) return;
+
+    try {
+      await firestore.collection('users').doc(id).delete();
+      debugPrint('🔥 User $id removed from Firebase Firestore.');
+    } catch (e) {
+      debugPrint('⚠️ Firebase deleteUser error: $e');
+    }
+  }
+
   /// Sync users stream from Firestore 'users' collection
   Stream<List<UserModel>> getUsersStream() {
     if (!_isInitialized) {

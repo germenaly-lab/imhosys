@@ -75,6 +75,11 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       activeUser: activeUser,
     ));
 
+    // Ensure all users are synced to Firebase Cloud Firestore
+    for (final u in loaded) {
+      FirebaseService.instance.saveUser(u);
+    }
+
     // Listen to real-time Firebase users stream for multi-device sync
     FirebaseService.instance.getUsersStream().listen((remoteUsers) {
       if (remoteUsers.isNotEmpty && state is UserLoaded) {
@@ -157,12 +162,15 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         orElse: () => currentState.activeUser,
       );
 
+      final targetUser = updatedUsers.firstWhere((u) => u.id == event.userId);
+
       emit(currentState.copyWith(
         users: updatedUsers,
         activeUser: updatedActive,
       ));
 
       LocalPersistenceService.saveUsers(updatedUsers);
+      FirebaseService.instance.saveUser(targetUser);
     }
   }
 
@@ -181,6 +189,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       ));
 
       LocalPersistenceService.saveUsers(updatedUsers);
+      FirebaseService.instance.deleteUser(event.userId);
     }
   }
 }
