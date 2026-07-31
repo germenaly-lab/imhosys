@@ -26,37 +26,38 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyA_IMHOSYS_WEB_APP_FIREBASE_KEY',
-    appId: '1:543210987654:web:imhosyswebapp0123456',
-    messagingSenderId: '543210987654',
+    apiKey: 'AIzaSyCjMBgF77VHuks9hOSPKJ0fq28_dbdS3JU',
+    appId: '1:1003967438591:web:7b7be7543b67a40c8eb6ca',
+    messagingSenderId: '1003967438591',
     projectId: 'imhosys-web-app',
     authDomain: 'imhosys-web-app.firebaseapp.com',
-    storageBucket: 'imhosys-web-app.appspot.com',
+    storageBucket: 'imhosys-web-app.firebasestorage.app',
+    measurementId: 'G-1JBNWJTYVW',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyA_IMHOSYS_WEB_APP_ANDROID_KEY',
-    appId: '1:543210987654:android:imhosyswebapp0123456',
-    messagingSenderId: '543210987654',
+    apiKey: 'AIzaSyCjMBgF77VHuks9hOSPKJ0fq28_dbdS3JU',
+    appId: '1:1003967438591:web:7b7be7543b67a40c8eb6ca',
+    messagingSenderId: '1003967438591',
     projectId: 'imhosys-web-app',
-    storageBucket: 'imhosys-web-app.appspot.com',
+    storageBucket: 'imhosys-web-app.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyA_IMHOSYS_WEB_APP_IOS_KEY',
-    appId: '1:543210987654:ios:imhosyswebapp0123456',
-    messagingSenderId: '543210987654',
+    apiKey: 'AIzaSyCjMBgF77VHuks9hOSPKJ0fq28_dbdS3JU',
+    appId: '1:1003967438591:web:7b7be7543b67a40c8eb6ca',
+    messagingSenderId: '1003967438591',
     projectId: 'imhosys-web-app',
-    storageBucket: 'imhosys-web-app.appspot.com',
+    storageBucket: 'imhosys-web-app.firebasestorage.app',
     iosBundleId: 'com.imhosys.webapp',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyA_IMHOSYS_WEB_APP_MACOS_KEY',
-    appId: '1:543210987654:ios:imhosyswebapp0123456',
-    messagingSenderId: '543210987654',
+    apiKey: 'AIzaSyCjMBgF77VHuks9hOSPKJ0fq28_dbdS3JU',
+    appId: '1:1003967438591:web:7b7be7543b67a40c8eb6ca',
+    messagingSenderId: '1003967438591',
     projectId: 'imhosys-web-app',
-    storageBucket: 'imhosys-web-app.appspot.com',
+    storageBucket: 'imhosys-web-app.firebasestorage.app',
     iosBundleId: 'com.imhosys.webapp',
   );
 }
