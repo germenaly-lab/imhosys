@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'user_event.dart';
 import 'user_state.dart';
@@ -121,6 +122,17 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   void _onUpdateUserPermissions(UpdateUserPermissions event, Emitter<UserState> emit) {
     if (state is UserLoaded) {
       final currentState = state as UserLoaded;
+      final targetUser = currentState.users.firstWhere((u) => u.id == event.userId);
+
+      final isCurrentlyAdmin = targetUser.permissions.canManageUsers;
+      final isTryingToBecomeAdmin = event.permissions.canManageUsers;
+
+      // Enforce RBAC: Transition from User to Admin is forbidden, but Admin to User is allowed
+      if (!isCurrentlyAdmin && isTryingToBecomeAdmin) {
+        debugPrint('⚠️ RBAC Violation: Transition from User to Admin is forbidden.');
+        return;
+      }
+
       final updatedUsers = currentState.users.map((u) {
         if (u.id == event.userId) {
           return u.copyWith(
@@ -135,15 +147,13 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         orElse: () => currentState.activeUser,
       );
 
-      final targetUser = updatedUsers.firstWhere((u) => u.id == event.userId);
-
       emit(currentState.copyWith(
         users: updatedUsers,
         activeUser: updatedActive,
       ));
 
       LocalPersistenceService.saveUsers(updatedUsers);
-      FirebaseService.instance.saveUser(targetUser);
+      FirebaseService.instance.saveUser(updatedUsers.firstWhere((u) => u.id == event.userId));
     }
   }
 

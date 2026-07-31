@@ -1076,7 +1076,16 @@ class _EditPermissionsModalState extends State<_EditPermissionsModal> {
             _buildSwitch(isArabic ? 'إجراء التحويلات بين الخزائن' : 'Can Execute Vault Transfers', _perm.canExecuteTransfer, (v) => setState(() => _perm = _perm.copyWith(canExecuteTransfer: v))),
             _buildSwitch(isArabic ? 'عرض أرصدة الخزائن والبنك (EGP/EUR/USD)' : 'Can View Vault Balances (EGP/EUR/USD)', _perm.canViewVaultBalances, (v) => setState(() => _perm = _perm.copyWith(canViewVaultBalances: v))),
             _buildSwitch(isArabic ? 'عرض إيرادات ودخل المشاريع' : 'Can View Project Revenues & Income', _perm.canViewProjectRevenues, (v) => setState(() => _perm = _perm.copyWith(canViewProjectRevenues: v))),
-            _buildSwitch(isArabic ? 'إدارة المستخدمين' : 'Can Manage Users & Permissions', _perm.canManageUsers, (v) => setState(() => _perm = _perm.copyWith(canManageUsers: v))),
+            _buildSwitch(
+              isArabic ? 'إدارة المستخدمين (صلاحية المسؤول Admin)' : 'Can Manage Users & Permissions (Admin Role)',
+              _perm.canManageUsers,
+              !widget.user.permissions.canManageUsers
+                  ? null
+                  : (v) => setState(() => _perm = _perm.copyWith(canManageUsers: v)),
+              subtitle: !widget.user.permissions.canManageUsers
+                  ? (isArabic ? '🔒 غير مسموح بالترقية من مستخدم إلى مسؤول' : '🔒 Transition from User to Admin is forbidden')
+                  : (isArabic ? '✅ مسموح بالتخفيض من مسؤول إلى مستخدم عادي' : '✅ Transition from Admin to User is allowed'),
+            ),
 
             const SizedBox(height: 24),
 
@@ -1107,11 +1116,14 @@ class _EditPermissionsModalState extends State<_EditPermissionsModal> {
     );
   }
 
-  Widget _buildSwitch(String label, bool value, Function(bool) onChanged) {
+  Widget _buildSwitch(String label, bool value, ValueChanged<bool>? onChanged, {String? subtitle}) {
     return SwitchListTile(
       dense: true,
       contentPadding: EdgeInsets.zero,
-      title: Text(label, style: const TextStyle(fontSize: 13, color: Colors.white)),
+      title: Text(label, style: TextStyle(fontSize: 13, color: onChanged == null ? AppColors.textSecondary : Colors.white)),
+      subtitle: subtitle != null
+          ? Text(subtitle, style: TextStyle(fontSize: 10, color: onChanged == null ? AppColors.warning : AppColors.success))
+          : null,
       value: value,
       activeThumbColor: AppColors.primaryLight,
       onChanged: onChanged,
