@@ -4,6 +4,7 @@ import 'transaction_state.dart';
 import '../../models/transaction_model.dart';
 import '../../seed/mock_data_generator.dart';
 import '../../../core/services/local_persistence_service.dart';
+import '../../../core/services/firebase_service.dart';
 
 class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
   TransactionBloc() : super(TransactionInitial()) {
@@ -14,6 +15,26 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
     on<SearchTransactions>(_onSearchTransactions);
     on<FilterTransactions>(_onFilterTransactions);
     on<ImportTransactions>(_onImportTransactions);
+    on<SyncTransactionsInternal>(_onSyncTransactionsInternal);
+  }
+
+  void _onSyncTransactionsInternal(SyncTransactionsInternal event, Emitter<TransactionState> emit) {
+    if (state is TransactionLoaded) {
+      final currentState = state as TransactionLoaded;
+      final updatedFiltered = _applyFilters(
+        all: event.transactions,
+        query: currentState.searchQuery,
+        project: currentState.selectedProject,
+        category: currentState.selectedCategory,
+        account: currentState.selectedAccount,
+        person: currentState.selectedPerson,
+      );
+      emit(currentState.copyWith(
+        allTransactions: event.transactions,
+        filteredTransactions: updatedFiltered,
+      ));
+      LocalPersistenceService.saveTransactions(event.transactions);
+    }
   }
 
   Future<void> _onLoadTransactions(LoadTransactions event, Emitter<TransactionState> emit) async {
@@ -29,6 +50,30 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
         allTransactions: initialData,
         filteredTransactions: initialData,
       ));
+
+      // Push initial transactions to Firebase Cloud Firestore
+      for (final txn in initialData) {
+        FirebaseService.instance.saveTransaction(txn);
+      }
+
+      // Listen to real-time Firebase transactions stream
+      FirebaseService.instance.getTransactionsStream().listen((remoteTxns) {
+        if (remoteTxns.isNotEmpty && state is TransactionLoaded) {
+          final currentState = state as TransactionLoaded;
+          final merged = List<TransactionModel>.from(currentState.allTransactions);
+
+          for (final r in remoteTxns) {
+            final idx = merged.indexWhere((t) => t.id == r.id);
+            if (idx >= 0) {
+              merged[idx] = r;
+            } else {
+              merged.insert(0, r);
+            }
+          }
+
+          add(SyncTransactionsInternal(merged));
+        }
+      });
     } catch (e) {
       emit(TransactionFailure('Failed to load transaction data: $e'));
     }
@@ -51,6 +96,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
         filteredTransactions: updatedFiltered,
       ));
       LocalPersistenceService.saveTransactions(updatedAll);
+      FirebaseService.instance.saveTransaction(event.transaction);
     }
   }
 
@@ -73,6 +119,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
         filteredTransactions: updatedFiltered,
       ));
       LocalPersistenceService.saveTransactions(updatedAll);
+      FirebaseService.instance.saveTransaction(event.transaction);
     }
   }
 
@@ -93,6 +140,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
         filteredTransactions: updatedFiltered,
       ));
       LocalPersistenceService.saveTransactions(updatedAll);
+      FirebaseService.instance.deleteTransaction(event.id);
     }
   }
 
@@ -152,6 +200,9 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
         filteredTransactions: updatedFiltered,
       ));
       LocalPersistenceService.saveTransactions(updatedAll);
+      for (final item in event.imported) {
+        FirebaseService.instance.saveTransaction(item);
+      }
     }
   }
 

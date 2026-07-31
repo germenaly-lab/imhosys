@@ -66,3 +66,11 @@ class ImportTransactions extends TransactionEvent {
   @override
   List<Object?> get props => [imported];
 }
+
+class SyncTransactionsInternal extends TransactionEvent {
+  final List<TransactionModel> transactions;
+  const SyncTransactionsInternal(this.transactions);
+
+  @override
+  List<Object?> get props => [transactions];
+}
