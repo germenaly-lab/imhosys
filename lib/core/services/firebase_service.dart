@@ -121,6 +121,8 @@ class FirebaseService {
           'canImportExportExcel': user.permissions.canImportExportExcel,
           'canExecuteTransfer': user.permissions.canExecuteTransfer,
           'canManageUsers': user.permissions.canManageUsers,
+          'canViewVaultBalances': user.permissions.canViewVaultBalances,
+          'canViewProjectRevenues': user.permissions.canViewProjectRevenues,
         },
         'updatedAt': FieldValue.serverTimestamp(),
       }).timeout(const Duration(seconds: 3));
@@ -170,6 +172,8 @@ class FirebaseService {
             canImportExportExcel: (permissionsMap['canImportExportExcel'] as bool?) ?? false,
             canExecuteTransfer: (permissionsMap['canExecuteTransfer'] as bool?) ?? false,
             canManageUsers: (permissionsMap['canManageUsers'] as bool?) ?? false,
+            canViewVaultBalances: (permissionsMap['canViewVaultBalances'] as bool?) ?? false,
+            canViewProjectRevenues: (permissionsMap['canViewProjectRevenues'] as bool?) ?? false,
           ),
         );
       }).toList();
