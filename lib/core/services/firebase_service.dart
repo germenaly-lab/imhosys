@@ -83,10 +83,10 @@ class FirebaseService {
         'projectTag': txn.projectTag,
         'sourceAccount': txn.sourceAccount,
         'updatedAt': FieldValue.serverTimestamp(),
-      });
+      }).timeout(const Duration(seconds: 3));
       debugPrint('🔥 Transaction ${txn.id} synced to Firebase Firestore.');
     } catch (e) {
-      debugPrint('⚠️ Firebase saveTransaction error: $e');
+      debugPrint('⚠️ Firebase saveTransaction notice: $e');
     }
   }
 
@@ -95,10 +95,10 @@ class FirebaseService {
     if (!_isInitialized) return;
 
     try {
-      await firestore.collection('transactions').doc(id).delete();
+      await firestore.collection('transactions').doc(id).delete().timeout(const Duration(seconds: 3));
       debugPrint('🔥 Transaction $id removed from Firebase Firestore.');
     } catch (e) {
-      debugPrint('⚠️ Firebase deleteTransaction error: $e');
+      debugPrint('⚠️ Firebase deleteTransaction notice: $e');
     }
   }
 
@@ -123,10 +123,10 @@ class FirebaseService {
           'canManageUsers': user.permissions.canManageUsers,
         },
         'updatedAt': FieldValue.serverTimestamp(),
-      });
+      }).timeout(const Duration(seconds: 3));
       debugPrint('🔥 User ${user.name} synced to Firebase Firestore.');
     } catch (e) {
-      debugPrint('⚠️ Firebase saveUser error: $e');
+      debugPrint('⚠️ Firebase saveUser notice: $e');
     }
   }
 
@@ -135,10 +135,10 @@ class FirebaseService {
     if (!_isInitialized) return;
 
     try {
-      await firestore.collection('users').doc(id).delete();
+      await firestore.collection('users').doc(id).delete().timeout(const Duration(seconds: 3));
       debugPrint('🔥 User $id removed from Firebase Firestore.');
     } catch (e) {
-      debugPrint('⚠️ Firebase deleteUser error: $e');
+      debugPrint('⚠️ Firebase deleteUser notice: $e');
     }
   }
 

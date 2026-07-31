@@ -8,6 +8,8 @@ import '../../features/users/bloc/user_state.dart';
 import '../../features/users/bloc/user_event.dart';
 import 'language_switch_button.dart';
 
+import '../../features/transactions/bloc/transaction_bloc.dart';
+import '../../features/transactions/bloc/transaction_event.dart';
 import '../theme/theme_cubit.dart';
 
 class HeaderBar extends StatelessWidget {
@@ -174,6 +176,39 @@ class HeaderBar extends StatelessWidget {
                 ),
                 onPressed: () {
                   context.read<ThemeCubit>().toggleTheme();
+                },
+              ),
+            ),
+
+            const SizedBox(width: 8),
+
+            // Manual Refresh Data Button
+            Container(
+              decoration: BoxDecoration(
+                color: isDarkMode ? AppColors.secondary.withValues(alpha: 0.2) : AppColors.secondary.withValues(alpha: 0.08),
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(
+                  color: isDarkMode ? AppColors.secondary : AppColors.secondary.withValues(alpha: 0.3),
+                  width: 1,
+                ),
+              ),
+              child: IconButton(
+                tooltip: isArabic ? 'تحديث البيانات وحالة النظام' : 'Refresh System & Cloud Data',
+                icon: const Icon(
+                  Icons.refresh_rounded,
+                  color: AppColors.secondary,
+                  size: 18,
+                ),
+                onPressed: () {
+                  context.read<TransactionBloc>().add(LoadTransactions());
+                  context.read<UserBloc>().add(LoadUsers());
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(isArabic ? 'تم إرسال طلب تحديث البيانات! 🔄' : 'System data refresh triggered! 🔄'),
+                      duration: const Duration(seconds: 1),
+                      behavior: SnackBarBehavior.floating,
+                    ),
+                  );
                 },
               ),
             ),
