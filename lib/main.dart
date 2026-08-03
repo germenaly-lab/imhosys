@@ -17,6 +17,12 @@ import 'features/projects/presentation/projects_screen.dart';
 import 'features/accounts/presentation/accounts_screen.dart';
 import 'features/excel_tool/presentation/excel_import_export_screen.dart';
 import 'features/users/presentation/users_screen.dart';
+import 'features/cash_advance/bloc/cash_advance_bloc.dart';
+import 'features/cash_advance/bloc/cash_advance_event.dart';
+import 'features/cash_advance/presentation/cash_advance_screen.dart';
+import 'features/payroll/bloc/payroll_bloc.dart';
+import 'features/payroll/bloc/payroll_event.dart';
+import 'features/payroll/presentation/payroll_screen.dart';
 import 'features/transactions/presentation/widgets/transaction_dialog.dart';
 import 'core/services/firebase_service.dart';
 import 'core/theme/theme_cubit.dart';
@@ -38,6 +44,8 @@ class ImhErpApp extends StatelessWidget {
         BlocProvider(create: (context) => ThemeCubit()),
         BlocProvider(create: (context) => UserBloc()..add(LoadUsers())),
         BlocProvider(create: (context) => TransactionBloc()..add(LoadTransactions())),
+        BlocProvider(create: (context) => CashAdvanceBloc()..add(LoadCashAdvances())),
+        BlocProvider(create: (context) => PayrollBloc()..add(LoadPayroll())),
       ],
       child: BlocBuilder<ThemeCubit, ThemeMode>(
         builder: (context, themeMode) {
@@ -121,6 +129,8 @@ class _MainShellScreenState extends State<MainShellScreen> {
     'ledgerHeader',
     'projectsHeader',
     'accountsHeader',
+    'cashAdvanceHeader',
+    'payrollHeader',
     'excelHeader',
     'usersHeader',
     'reportsHeader',
@@ -242,6 +252,8 @@ class _MainShellScreenState extends State<MainShellScreen> {
                         LedgerScreen(),
                         ProjectsScreen(),
                         AccountsScreen(),
+                        CashAdvanceScreen(),
+                        PayrollScreen(),
                         ExcelImportExportScreen(),
                         UsersScreen(),
                         LedgerScreen(),

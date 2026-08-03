@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../features/models/user_model.dart';
 import '../../features/models/transaction_model.dart';
+import '../../features/cash_advance/models/cash_advance_model.dart';
+import '../../features/payroll/models/payroll_model.dart';
 import '../constants/app_projects.dart';
 
 class LocalPersistenceService {
@@ -11,6 +13,8 @@ class LocalPersistenceService {
   static const String _transactionsKey = 'imh_persisted_transactions_v1';
   static const String _themeModeKey = 'imh_persisted_theme_mode_v1';
   static const String _projectsKey = 'imh_persisted_projects_v1';
+  static const String _cashAdvancesKey = 'imh_persisted_cash_advances_v1';
+  static const String _payrollKey = 'imh_persisted_payroll_v1';
 
   // PROJECTS persistence
   static Future<void> saveProjects(List<EngineeringProject> projects) async {
@@ -124,5 +128,55 @@ class LocalPersistenceService {
       debugPrint('Error loading theme mode: $e');
     }
     return ThemeMode.light;
+  }
+
+  // CASH ADVANCE persistence
+  static Future<void> saveCashAdvances(List<CashAdvanceModel> list) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final encoded = jsonEncode(list.map((item) => item.toJson()).toList());
+      await prefs.setString(_cashAdvancesKey, encoded);
+    } catch (e) {
+      debugPrint('Error saving cash advances: $e');
+    }
+  }
+
+  static Future<List<CashAdvanceModel>?> loadCashAdvances() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final raw = prefs.getString(_cashAdvancesKey);
+      if (raw != null && raw.isNotEmpty) {
+        final List decoded = jsonDecode(raw);
+        return decoded.map((item) => CashAdvanceModel.fromJson(Map<String, dynamic>.from(item as Map))).toList();
+      }
+    } catch (e) {
+      debugPrint('Error loading cash advances: $e');
+    }
+    return null;
+  }
+
+  // PAYROLL persistence
+  static Future<void> savePayroll(List<PayrollModel> list) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final encoded = jsonEncode(list.map((item) => item.toJson()).toList());
+      await prefs.setString(_payrollKey, encoded);
+    } catch (e) {
+      debugPrint('Error saving payroll: $e');
+    }
+  }
+
+  static Future<List<PayrollModel>?> loadPayroll() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final raw = prefs.getString(_payrollKey);
+      if (raw != null && raw.isNotEmpty) {
+        final List decoded = jsonDecode(raw);
+        return decoded.map((item) => PayrollModel.fromJson(Map<String, dynamic>.from(item as Map))).toList();
+      }
+    } catch (e) {
+      debugPrint('Error loading payroll: $e');
+    }
+    return null;
   }
 }

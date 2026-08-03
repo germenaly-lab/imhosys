@@ -10,11 +10,17 @@ import '../../../models/transaction_model.dart';
 
 class TransactionDialog extends StatefulWidget {
   final TransactionModel? transactionToEdit;
+  final String? initialProjectTag;
+  final TransactionType? initialType;
+  final List<String>? availableProjectNames;
   final Function(TransactionModel) onSave;
 
   const TransactionDialog({
     super.key,
     this.transactionToEdit,
+    this.initialProjectTag,
+    this.initialType,
+    this.availableProjectNames,
     required this.onSave,
   });
 
@@ -56,11 +62,15 @@ class _TransactionDialogState extends State<TransactionDialog> {
   @override
   void initState() {
     super.initState();
+    final projectOptions = widget.availableProjectNames ?? AppProjects.getProjectNames();
+
     if (widget.transactionToEdit != null) {
       final t = widget.transactionToEdit!;
       _selectedDate = t.date;
       _selectedCategory = t.category;
-      _selectedProject = t.projectTag;
+      _selectedProject = projectOptions.contains(t.projectTag)
+          ? t.projectTag
+          : (projectOptions.isNotEmpty ? projectOptions.first : t.projectTag);
       _selectedAccount = t.sourceAccount;
       _selectedPerson = t.responsiblePerson;
       _selectedType = t.type;
@@ -72,10 +82,12 @@ class _TransactionDialogState extends State<TransactionDialog> {
     } else {
       _selectedDate = DateTime.now();
       _selectedCategory = AppCategories.getAllSubcategories().first;
-      _selectedProject = AppProjects.getProjectNames().first;
+      _selectedProject = (widget.initialProjectTag != null && projectOptions.contains(widget.initialProjectTag))
+          ? widget.initialProjectTag!
+          : (projectOptions.isNotEmpty ? projectOptions.first : AppProjects.getProjectNames().first);
       _selectedAccount = AppAccounts.getAccountCodes().first;
       _selectedPerson = _responsiblePersons.first;
-      _selectedType = TransactionType.expense;
+      _selectedType = widget.initialType ?? TransactionType.expense;
     }
   }
 
@@ -314,7 +326,7 @@ class _TransactionDialogState extends State<TransactionDialog> {
                         dropdownColor: AppColors.getSurface(context),
                         style: TextStyle(color: AppColors.getTextPrimary(context), fontSize: 13),
                         decoration: InputDecoration(labelText: AppTranslations.get('projectTagLabel', isArabic)),
-                        items: AppProjects.getProjectNames().map((p) {
+                        items: (widget.availableProjectNames ?? AppProjects.getProjectNames()).map((p) {
                           return DropdownMenuItem(value: p, child: Text(p, overflow: TextOverflow.ellipsis));
                         }).toList(),
                         onChanged: (val) {
