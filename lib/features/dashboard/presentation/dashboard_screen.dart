@@ -7,6 +7,7 @@ import '../../../core/constants/app_categories.dart';
 import '../../../core/utils/currency_formatter.dart';
 import '../../../core/widgets/kpi_card.dart';
 import '../../../core/widgets/status_badge.dart';
+import '../../../core/widgets/glass_container.dart';
 import '../../../core/localization/locale_cubit.dart';
 import '../../../core/localization/app_translations.dart';
 import '../../transactions/bloc/transaction_bloc.dart';
@@ -20,6 +21,7 @@ class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isArabic = context.watch<LocaleCubit>().isArabic;
+    final isDark = AppColors.isDark(context);
     final screenWidth = MediaQuery.of(context).size.width;
     final isMobile = screenWidth < 900;
 
@@ -65,7 +67,7 @@ class DashboardScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // KPI Cards Grid (Desktop Row or Mobile Column/Wrap)
+                // KPI Cards Grid
                 if (!isMobile)
                   Row(
                     children: [
@@ -74,8 +76,9 @@ class DashboardScreen extends StatelessWidget {
                           title: AppTranslations.get('egpBalance', isArabic),
                           value: egpDisplay,
                           subtitle: isArabic ? 'الخزينة الرئيسية للتشغيل' : 'Primary Operating Treasury',
-                          icon: Icons.account_balance,
+                          icon: Icons.account_balance_rounded,
                           accentColor: AppColors.egp,
+                          iconGradient: AppColors.emeraldGradient,
                         ),
                       ),
                       const SizedBox(width: 16),
@@ -86,6 +89,7 @@ class DashboardScreen extends StatelessWidget {
                           subtitle: isArabic ? 'مشاريع سيمنس والواردات' : 'EU Imports & Siemens Projects',
                           icon: Icons.euro_rounded,
                           accentColor: AppColors.eur,
+                          iconGradient: AppColors.cyanGradient,
                         ),
                       ),
                       const SizedBox(width: 16),
@@ -96,6 +100,7 @@ class DashboardScreen extends StatelessWidget {
                           subtitle: isArabic ? 'العقود الدولية والشحن' : 'International Contracts & Freight',
                           icon: Icons.monetization_on_rounded,
                           accentColor: AppColors.usd,
+                          iconGradient: AppColors.amberGradient,
                         ),
                       ),
                       const SizedBox(width: 16),
@@ -105,7 +110,8 @@ class DashboardScreen extends StatelessWidget {
                           value: isArabic ? '7 مشاريع' : '7 Projects',
                           subtitle: isArabic ? 'سيمنس، السنغال، والمزيد' : 'Siemens UAE, FCB Senegal, etc.',
                           icon: Icons.engineering_rounded,
-                          accentColor: AppColors.secondary,
+                          accentColor: AppColors.primary,
+                          iconGradient: AppColors.purpleGradient,
                         ),
                       ),
                     ],
@@ -117,8 +123,9 @@ class DashboardScreen extends StatelessWidget {
                         title: AppTranslations.get('egpBalance', isArabic),
                         value: egpDisplay,
                         subtitle: isArabic ? 'الخزينة الرئيسية للتشغيل' : 'Primary Operating Treasury',
-                        icon: Icons.account_balance,
+                        icon: Icons.account_balance_rounded,
                         accentColor: AppColors.egp,
+                        iconGradient: AppColors.emeraldGradient,
                       ),
                       const SizedBox(height: 12),
                       KpiCard(
@@ -127,6 +134,7 @@ class DashboardScreen extends StatelessWidget {
                         subtitle: isArabic ? 'مشاريع سيمنس والواردات' : 'EU Imports & Siemens Projects',
                         icon: Icons.euro_rounded,
                         accentColor: AppColors.eur,
+                        iconGradient: AppColors.cyanGradient,
                       ),
                       const SizedBox(height: 12),
                       KpiCard(
@@ -135,6 +143,7 @@ class DashboardScreen extends StatelessWidget {
                         subtitle: isArabic ? 'العقود الدولية والشحن' : 'International Contracts & Freight',
                         icon: Icons.monetization_on_rounded,
                         accentColor: AppColors.usd,
+                        iconGradient: AppColors.amberGradient,
                       ),
                       const SizedBox(height: 12),
                       KpiCard(
@@ -142,25 +151,24 @@ class DashboardScreen extends StatelessWidget {
                         value: isArabic ? '7 مشاريع' : '7 Projects',
                         subtitle: isArabic ? 'سيمنس، السنغال، والمزيد' : 'Siemens UAE, FCB Senegal, etc.',
                         icon: Icons.engineering_rounded,
-                        accentColor: AppColors.secondary,
+                        accentColor: AppColors.primary,
+                        iconGradient: AppColors.purpleGradient,
                       ),
                     ],
                   ),
 
                 const SizedBox(height: 24),
 
-                // Visualizations Section (Charts)
+                // Visualizations Section (Frosted Glass Charts)
                 if (!isMobile)
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Pie Chart - Expense Breakdown by Category
                       Expanded(
                         flex: 5,
                         child: _buildPieChartCard(context, categoryEgpMap, isArabic),
                       ),
                       const SizedBox(width: 20),
-                      // Top 5 Most Expensive Engineering Projects
                       Expanded(
                         flex: 4,
                         child: _buildTopProjectsCard(context, top5Projects, isArabic),
@@ -178,33 +186,70 @@ class DashboardScreen extends StatelessWidget {
 
                 const SizedBox(height: 24),
 
-                // Cash Outflow Trend Bar Chart
-                Container(
-                  height: 280,
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: AppColors.getSurface(context),
-                    borderRadius: BorderRadius.circular(14),
-                    border: Border.all(color: AppColors.getDivider(context)),
-                  ),
+                // Cash Outflow Trend Bar Chart (Glass Container)
+                GlassContainer(
+                  padding: const EdgeInsets.all(22),
+                  glowColor: AppColors.primary,
+                  borderColor: AppColors.primary.withValues(alpha: isDark ? 0.35 : 0.20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        AppTranslations.get('cashOutflowTrend', isArabic),
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 0.8,
-                          color: AppColors.getTextPrimary(context),
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              const GlassIconBadge(
+                                icon: Icons.trending_up_rounded,
+                                gradient: AppColors.primaryGradient,
+                                size: 36,
+                                iconSize: 18,
+                              ),
+                              const SizedBox(width: 12),
+                              Text(
+                                AppTranslations.get('cashOutflowTrend', isArabic).toUpperCase(),
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w900,
+                                  letterSpacing: 1.1,
+                                  color: AppColors.getTextPrimary(context),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                            decoration: BoxDecoration(
+                              color: AppColors.primary.withValues(alpha: 0.15),
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(color: AppColors.primary.withValues(alpha: 0.3)),
+                            ),
+                            child: Text(
+                              isArabic ? 'التحليل الشهري' : 'Monthly Outflow',
+                              style: const TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w700,
+                                color: AppColors.primaryLight,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      const SizedBox(height: 20),
-                      Expanded(
+                      const SizedBox(height: 24),
+                      SizedBox(
+                        height: 240,
                         child: BarChart(
                           BarChartData(
                             alignment: BarChartAlignment.spaceAround,
-                            barTouchData: const BarTouchData(enabled: true),
+                            barTouchData: BarTouchData(
+                              enabled: true,
+                              touchTooltipData: BarTouchTooltipData(
+                                getTooltipColor: (_) => isDark ? const Color(0xFF1E293B) : Colors.white,
+                                tooltipBorder: BorderSide(
+                                  color: AppColors.primary.withValues(alpha: 0.4),
+                                ),
+                              ),
+                            ),
                             titlesData: FlTitlesData(
                               show: true,
                               bottomTitles: AxisTitles(
@@ -220,7 +265,11 @@ class DashboardScreen extends StatelessWidget {
                                         padding: const EdgeInsets.only(top: 8.0),
                                         child: Text(
                                           months[index],
-                                          style: const TextStyle(color: AppColors.textSecondary, fontSize: 11),
+                                          style: TextStyle(
+                                            color: AppColors.getTextSecondary(context),
+                                            fontSize: 11,
+                                            fontWeight: FontWeight.w600,
+                                          ),
                                         ),
                                       );
                                     }
@@ -235,17 +284,20 @@ class DashboardScreen extends StatelessWidget {
                             gridData: FlGridData(
                               show: true,
                               drawVerticalLine: false,
-                              getDrawingHorizontalLine: (value) => const FlLine(color: AppColors.divider, strokeWidth: 1),
+                              getDrawingHorizontalLine: (value) => FlLine(
+                                color: AppColors.getDivider(context).withValues(alpha: 0.5),
+                                strokeWidth: 1,
+                              ),
                             ),
                             borderData: FlBorderData(show: false),
                             barGroups: [
-                              _makeBarGroup(0, 180, AppColors.egp),
-                              _makeBarGroup(1, 240, AppColors.egp),
-                              _makeBarGroup(2, 310, AppColors.eur),
-                              _makeBarGroup(3, 280, AppColors.usd),
-                              _makeBarGroup(4, 390, AppColors.primary),
-                              _makeBarGroup(5, 450, AppColors.secondary),
-                              _makeBarGroup(6, 520, AppColors.egp),
+                              _makeBarGroup(0, 180, AppColors.emeraldGradient),
+                              _makeBarGroup(1, 240, AppColors.emeraldGradient),
+                              _makeBarGroup(2, 310, AppColors.cyanGradient),
+                              _makeBarGroup(3, 280, AppColors.amberGradient),
+                              _makeBarGroup(4, 390, AppColors.purpleGradient),
+                              _makeBarGroup(5, 450, AppColors.primaryGradient),
+                              _makeBarGroup(6, 520, AppColors.emeraldGradient),
                             ],
                           ),
                         ),
@@ -264,34 +316,44 @@ class DashboardScreen extends StatelessWidget {
   }
 
   Widget _buildPieChartCard(BuildContext context, Map<String, double> categoryEgpMap, bool isArabic) {
-    return Container(
-      height: 380,
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: AppColors.getSurface(context),
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: AppColors.getDivider(context)),
-      ),
+    final isDark = AppColors.isDark(context);
+
+    return GlassContainer(
+      padding: const EdgeInsets.all(22),
+      glowColor: AppColors.secondary,
+      borderColor: AppColors.secondary.withValues(alpha: isDark ? 0.35 : 0.20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                AppTranslations.get('expenseDist', isArabic),
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 0.8,
-                  color: AppColors.getTextPrimary(context),
-                ),
+              Row(
+                children: [
+                  const GlassIconBadge(
+                    icon: Icons.pie_chart_outline_rounded,
+                    gradient: AppColors.cyanGradient,
+                    size: 36,
+                    iconSize: 18,
+                  ),
+                  const SizedBox(width: 12),
+                  Text(
+                    AppTranslations.get('expenseDist', isArabic).toUpperCase(),
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w900,
+                      letterSpacing: 1.1,
+                      color: AppColors.getTextPrimary(context),
+                    ),
+                  ),
+                ],
               ),
-              const Icon(Icons.pie_chart_outline_rounded, color: AppColors.secondary, size: 20),
+              StatusBadge(text: isArabic ? 'التصنيف' : 'Categories', color: AppColors.secondary),
             ],
           ),
-          const SizedBox(height: 20),
-          Expanded(
+          const SizedBox(height: 24),
+          SizedBox(
+            height: 280,
             child: Row(
               children: [
                 Expanded(
@@ -299,7 +361,7 @@ class DashboardScreen extends StatelessWidget {
                   child: PieChart(
                     PieChartData(
                       sectionsSpace: 4,
-                      centerSpaceRadius: 50,
+                      centerSpaceRadius: 48,
                       sections: _generatePieSections(categoryEgpMap),
                     ),
                   ),
@@ -308,24 +370,42 @@ class DashboardScreen extends StatelessWidget {
                 Expanded(
                   flex: 2,
                   child: ListView(
+                    physics: const BouncingScrollPhysics(),
                     children: categoryEgpMap.entries.take(6).map((entry) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 4),
+                      final categoryColor = _getCategoryColor(entry.key);
+                      return Container(
+                        margin: const EdgeInsets.symmetric(vertical: 4),
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                        decoration: BoxDecoration(
+                          color: categoryColor.withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: categoryColor.withValues(alpha: 0.25)),
+                        ),
                         child: Row(
                           children: [
                             Container(
-                              width: 10,
-                              height: 10,
+                              width: 8,
+                              height: 8,
                               decoration: BoxDecoration(
-                                color: _getCategoryColor(entry.key),
+                                color: categoryColor,
                                 shape: BoxShape.circle,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: categoryColor,
+                                    blurRadius: 4,
+                                  ),
+                                ],
                               ),
                             ),
                             const SizedBox(width: 8),
                             Expanded(
                               child: Text(
                                 AppCategories.getLocalizedName(entry.key, isArabic),
-                                style: TextStyle(fontSize: 11, color: AppColors.getTextPrimary(context)),
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w700,
+                                  color: AppColors.getTextPrimary(context),
+                                ),
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -344,94 +424,112 @@ class DashboardScreen extends StatelessWidget {
   }
 
   Widget _buildTopProjectsCard(BuildContext context, List<MapEntry<String, double>> top5Projects, bool isArabic) {
-    return Container(
-      height: 380,
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: AppColors.getSurface(context),
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: AppColors.getDivider(context)),
-      ),
+    final isDark = AppColors.isDark(context);
+
+    return GlassContainer(
+      padding: const EdgeInsets.all(22),
+      glowColor: AppColors.usd,
+      borderColor: AppColors.usd.withValues(alpha: isDark ? 0.35 : 0.20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                AppTranslations.get('topProjects', isArabic),
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 0.8,
-                  color: AppColors.getTextPrimary(context),
-                ),
+              Row(
+                children: [
+                  const GlassIconBadge(
+                    icon: Icons.leaderboard_rounded,
+                    gradient: AppColors.amberGradient,
+                    size: 36,
+                    iconSize: 18,
+                  ),
+                  const SizedBox(width: 12),
+                  Text(
+                    AppTranslations.get('topProjects', isArabic).toUpperCase(),
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w900,
+                      letterSpacing: 1.1,
+                      color: AppColors.getTextPrimary(context),
+                    ),
+                  ),
+                ],
               ),
-              const Icon(Icons.leaderboard_rounded, color: AppColors.usd, size: 20),
+              StatusBadge(text: isArabic ? 'أعلى 5' : 'Top 5', color: AppColors.usd),
             ],
           ),
-          const SizedBox(height: 16),
-          Expanded(
+          const SizedBox(height: 20),
+          SizedBox(
+            height: 280,
             child: ListView.separated(
+              physics: const BouncingScrollPhysics(),
               itemCount: top5Projects.length,
-              separatorBuilder: (_, _) => Divider(color: AppColors.getDivider(context), height: 16),
+              separatorBuilder: (_, _) => const SizedBox(height: 10),
               itemBuilder: (context, idx) {
                 final proj = top5Projects[idx];
-                return Row(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: AppColors.primary.withValues(alpha: 0.15),
-                        borderRadius: BorderRadius.circular(8),
+                return Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: AppColors.getSurfaceLight(context).withValues(alpha: 0.4),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: AppColors.getDivider(context).withValues(alpha: 0.6),
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      GlassIconBadge(
+                        icon: Icons.star_rounded,
+                        gradient: idx == 0
+                            ? AppColors.amberGradient
+                            : (idx == 1 ? AppColors.cyanGradient : AppColors.primaryGradient),
+                        size: 34,
+                        iconSize: 16,
                       ),
-                      child: Text(
-                        '#${idx + 1}',
-                        style: const TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.primaryLight,
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              proj.key,
+                              style: TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w800,
+                                color: AppColors.getTextPrimary(context),
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              isArabic ? 'خدمات هندسية وأتمتة' : 'Automation & Engineering Services',
+                              style: TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.getTextSecondary(context),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Text(
-                            proj.key,
-                            style: TextStyle(
+                            CurrencyFormatter.format(proj.value, Currency.EGP),
+                            style: const TextStyle(
                               fontSize: 13,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.getTextPrimary(context),
+                              fontWeight: FontWeight.w900,
+                              color: AppColors.egp,
                             ),
-                            overflow: TextOverflow.ellipsis,
                           ),
-                          const SizedBox(height: 2),
-                          Text(
-                            isArabic ? 'خدمات هندسية وأتمتة' : 'Automation & Engineering Services',
-                            style: const TextStyle(fontSize: 11, color: AppColors.textSecondary),
-                          ),
+                          const SizedBox(height: 4),
+                          StatusBadge(text: isArabic ? 'نشط' : 'Active', color: AppColors.success),
                         ],
                       ),
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text(
-                          CurrencyFormatter.format(proj.value, Currency.EGP),
-                          style: const TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.egp,
-                          ),
-                        ),
-                        const SizedBox(height: 2),
-                        StatusBadge(text: isArabic ? 'نشط' : 'Active', color: AppColors.success),
-                      ],
-                    ),
-                  ],
+                    ],
+                  ),
                 );
               },
             ),
@@ -463,8 +561,8 @@ class DashboardScreen extends StatelessWidget {
         color: color,
         value: entry.value,
         title: '${percentage.toStringAsFixed(0)}%',
-        radius: 40,
-        titleStyle: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.white),
+        radius: 44,
+        titleStyle: const TextStyle(fontSize: 11, fontWeight: FontWeight.w900, color: Colors.white),
       );
     }).toList();
   }
@@ -476,15 +574,15 @@ class DashboardScreen extends StatelessWidget {
     return AppColors.commercialAdmin;
   }
 
-  BarChartGroupData _makeBarGroup(int x, double y, Color color) {
+  BarChartGroupData _makeBarGroup(int x, double y, LinearGradient gradient) {
     return BarChartGroupData(
       x: x,
       barRods: [
         BarChartRodData(
           toY: y,
-          color: color,
+          gradient: gradient,
           width: 22,
-          borderRadius: const BorderRadius.only(topLeft: Radius.circular(6), topRight: Radius.circular(6)),
+          borderRadius: const BorderRadius.only(topLeft: Radius.circular(8), topRight: Radius.circular(8)),
         ),
       ],
     );

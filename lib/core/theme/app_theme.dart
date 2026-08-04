@@ -3,12 +3,12 @@ import 'package:google_fonts/google_fonts.dart';
 import '../constants/app_colors.dart';
 
 class AppTheme {
-  static const Color darkBackground = Color(0xFF0F172A);
-  static const Color darkSurface = Color(0xFF1E293B);
-  static const Color darkSurfaceLight = Color(0xFF334155);
-  static const Color darkDivider = Color(0xFF334155);
-  static const Color darkTextPrimary = Color(0xFFF8FAFC);
-  static const Color darkTextSecondary = Color(0xFF94A3B8);
+  static Color get darkBackground => AppColors.darkBackground;
+  static Color get darkSurface => AppColors.darkSurface;
+  static Color get darkSurfaceLight => AppColors.darkSurfaceLight;
+  static Color get darkDivider => AppColors.darkDivider;
+  static Color get darkTextPrimary => AppColors.darkTextPrimary;
+  static Color get darkTextSecondary => AppColors.darkTextSecondary;
 
   static ThemeData get lightTheme {
     return ThemeData(
@@ -24,7 +24,7 @@ class AppTheme {
         onPrimary: Colors.white,
         onSurface: AppColors.textPrimary,
       ),
-      textTheme: GoogleFonts.interTextTheme(
+      textTheme: GoogleFonts.plusJakartaSansTextTheme(
         ThemeData.light().textTheme.copyWith(
           displayLarge: const TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.bold),
           headlineMedium: const TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.w700),
@@ -35,35 +35,35 @@ class AppTheme {
       ),
       cardTheme: CardThemeData(
         color: AppColors.surface,
-        elevation: 1,
-        shadowColor: Colors.black.withValues(alpha: 0.04),
+        elevation: 2,
+        shadowColor: AppColors.primary.withValues(alpha: 0.06),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-          side: const BorderSide(color: AppColors.divider, width: 1),
+          borderRadius: BorderRadius.circular(16),
+          side: const BorderSide(color: AppColors.divider, width: 1.2),
         ),
       ),
       dialogTheme: DialogThemeData(
         backgroundColor: AppColors.surface,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-          side: const BorderSide(color: AppColors.divider, width: 1),
+          borderRadius: BorderRadius.circular(20),
+          side: const BorderSide(color: AppColors.divider, width: 1.2),
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: AppColors.surface,
+        fillColor: AppColors.surfaceLight,
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(12),
           borderSide: const BorderSide(color: AppColors.divider),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(12),
           borderSide: const BorderSide(color: AppColors.divider),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: AppColors.primary, width: 1.8),
         ),
         hintStyle: const TextStyle(color: AppColors.textSecondary, fontSize: 13),
       ),
@@ -74,58 +74,58 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,
-      scaffoldBackgroundColor: darkBackground,
-      dividerColor: darkDivider,
-      colorScheme: const ColorScheme.dark(
+      scaffoldBackgroundColor: AppColors.darkBackground,
+      dividerColor: AppColors.darkDivider,
+      colorScheme: ColorScheme.dark(
         primary: AppColors.primary,
         secondary: AppColors.secondary,
-        surface: darkSurface,
+        surface: AppColors.darkSurface,
         error: AppColors.error,
         onPrimary: Colors.white,
-        onSurface: darkTextPrimary,
+        onSurface: AppColors.darkTextPrimary,
       ),
-      textTheme: GoogleFonts.interTextTheme(
+      textTheme: GoogleFonts.plusJakartaSansTextTheme(
         ThemeData.dark().textTheme.copyWith(
-          displayLarge: const TextStyle(color: darkTextPrimary, fontWeight: FontWeight.bold),
-          headlineMedium: const TextStyle(color: darkTextPrimary, fontWeight: FontWeight.w700),
-          titleLarge: const TextStyle(color: darkTextPrimary, fontWeight: FontWeight.w600),
-          bodyLarge: const TextStyle(color: darkTextPrimary),
-          bodyMedium: const TextStyle(color: darkTextSecondary),
+          displayLarge: TextStyle(color: AppColors.darkTextPrimary, fontWeight: FontWeight.bold),
+          headlineMedium: TextStyle(color: AppColors.darkTextPrimary, fontWeight: FontWeight.w700),
+          titleLarge: TextStyle(color: AppColors.darkTextPrimary, fontWeight: FontWeight.w600),
+          bodyLarge: TextStyle(color: AppColors.darkTextPrimary),
+          bodyMedium: TextStyle(color: AppColors.darkTextSecondary),
         ),
       ),
       cardTheme: CardThemeData(
-        color: darkSurface,
-        elevation: 2,
-        shadowColor: Colors.black.withValues(alpha: 0.3),
+        color: AppColors.darkSurface,
+        elevation: 4,
+        shadowColor: AppColors.primary.withValues(alpha: 0.2),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-          side: const BorderSide(color: darkDivider, width: 1),
+          borderRadius: BorderRadius.circular(16),
+          side: BorderSide(color: AppColors.darkDivider, width: 1.2),
         ),
       ),
       dialogTheme: DialogThemeData(
-        backgroundColor: darkSurface,
+        backgroundColor: AppColors.darkSurface,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-          side: const BorderSide(color: darkDivider, width: 1),
+          borderRadius: BorderRadius.circular(20),
+          side: BorderSide(color: AppColors.primary.withValues(alpha: 0.3), width: 1.2),
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: darkBackground,
+        fillColor: AppColors.darkBackground,
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(color: darkDivider),
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: AppColors.darkDivider),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(color: darkDivider),
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: AppColors.darkDivider),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: AppColors.primary, width: 1.8),
         ),
-        hintStyle: const TextStyle(color: darkTextSecondary, fontSize: 13),
+        hintStyle: TextStyle(color: AppColors.darkTextSecondary, fontSize: 13),
       ),
     );
   }
