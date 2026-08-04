@@ -603,16 +603,30 @@ class _LoginScreenState extends State<LoginScreen> {
 
               const SizedBox(height: 28),
 
-              // Footer: Powered by pom agency
+              // Footer: Powered by pom agency & Copyright
               Center(
-                child: Text(
-                  'powered by pom agency'.toUpperCase(),
-                  style: TextStyle(
-                    fontSize: 10,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 1.8,
-                    color: AppColors.darkTextSecondary.withValues(alpha: 0.8),
-                  ),
+                child: Column(
+                  children: [
+                    Text(
+                      'powered by pom agency'.toUpperCase(),
+                      style: TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 1.8,
+                        color: AppColors.darkTextSecondary.withValues(alpha: 0.8),
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      '© 2026 pom-agency Systems. All rights reserved.',
+                      style: TextStyle(
+                        fontSize: 9,
+                        fontWeight: FontWeight.w500,
+                        letterSpacing: 0.5,
+                        color: AppColors.darkTextSecondary.withValues(alpha: 0.55),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
