@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
+import 'glass_container.dart';
 
 class CompanyLogo extends StatelessWidget {
   final double size;
@@ -20,71 +21,84 @@ class CompanyLogo extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Container(
-          width: size,
-          height: size,
+        // High-Contrast Glass Pod Container for Logo
+        GlassContainer(
+          blur: 16,
           padding: EdgeInsets.all(size * 0.12),
-          decoration: BoxDecoration(
-            color: AppColors.getSurface(context),
-            shape: BoxShape.circle,
-            border: Border.all(
-              color: AppColors.primary.withValues(alpha: 0.6),
-              width: 2,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.primary.withValues(alpha: 0.35),
-                blurRadius: 20,
-                spreadRadius: 2,
-              ),
-            ],
+          borderRadius: BorderRadius.circular(size * 0.4),
+          fillContainerColor: Colors.white.withValues(alpha: 0.95),
+          glowColor: AppColors.primaryLight,
+          elevation: 6,
+          border: Border.all(
+            color: AppColors.primaryLight,
+            width: 2.2,
           ),
-          child: Image.network(
-            logoUrl,
-            fit: BoxFit.contain,
-            errorBuilder: (context, error, stackTrace) => _buildFallbackLogo(),
-            loadingBuilder: (context, child, loadingProgress) {
-              if (loadingProgress == null) return child;
-              return _buildFallbackLogo();
-            },
+          child: SizedBox(
+            width: size,
+            height: size,
+            child: Image.network(
+              logoUrl,
+              fit: BoxFit.contain,
+              errorBuilder: (context, error, stackTrace) => _buildHighContrastFallback(),
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) return child;
+                return _buildHighContrastFallback();
+              },
+            ),
           ),
         ),
         if (showText) ...[
-          SizedBox(height: size * 0.18),
-          const Text(
-            'IMHOSYS',
-            style: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.w900,
-              letterSpacing: 2.0,
-              color: Colors.white,
+          SizedBox(height: size * 0.16),
+          ShaderMask(
+            shaderCallback: (bounds) => AppColors.cyanGradient.createShader(bounds),
+            child: const Text(
+              'IMHOSYS',
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.w900,
+                letterSpacing: 2.2,
+                color: Colors.white,
+              ),
             ),
           ),
-          const SizedBox(height: 2),
-          const Text(
-            'INDUSTRIAL AUTOMATION & ELECTRICAL SOLUTIONS',
-            style: TextStyle(
-              fontSize: 9,
-              fontWeight: FontWeight.w700,
-              letterSpacing: 1.2,
-              color: AppColors.primaryLight,
+          const SizedBox(height: 3),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+            decoration: BoxDecoration(
+              color: AppColors.primary.withValues(alpha: 0.25),
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(
+                color: AppColors.primaryLight.withValues(alpha: 0.6),
+                width: 1,
+              ),
             ),
-            textAlign: TextAlign.center,
+            child: const Text(
+              'INDUSTRIAL AUTOMATION & ELECTRICAL SOLUTIONS',
+              style: TextStyle(
+                fontSize: 9,
+                fontWeight: FontWeight.w800,
+                letterSpacing: 1.2,
+                color: Colors.white,
+              ),
+              textAlign: TextAlign.center,
+            ),
           ),
         ],
       ],
     );
   }
 
-  Widget _buildFallbackLogo() {
+  Widget _buildHighContrastFallback() {
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         shape: BoxShape.circle,
-        gradient: LinearGradient(
-          colors: [AppColors.primary, AppColors.secondary],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
+        gradient: AppColors.primaryGradient,
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.primary.withValues(alpha: 0.5),
+            blurRadius: 10,
+          ),
+        ],
       ),
       child: Center(
         child: Text(
@@ -93,7 +107,13 @@ class CompanyLogo extends StatelessWidget {
             color: Colors.white,
             fontSize: size * 0.28,
             fontWeight: FontWeight.w900,
-            letterSpacing: 1.0,
+            letterSpacing: 1.2,
+            shadows: const [
+              Shadow(
+                color: Colors.black45,
+                blurRadius: 4,
+              ),
+            ],
           ),
         ),
       ),

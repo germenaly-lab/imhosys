@@ -69,21 +69,21 @@ class _LoginScreenState extends State<LoginScreen> {
         backgroundColor: AppColors.darkBackground,
         body: Stack(
           children: [
-            // Ambient Radial Neon Glows
+            // Ambient High-Contrast Radial Halos
             Positioned(
-              top: -100,
-              left: -100,
+              top: -120,
+              left: -120,
               child: Container(
-                width: 500,
-                height: 500,
+                width: 550,
+                height: 550,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   gradient: RadialGradient(
                     colors: [
-                      AppColors.primary.withValues(alpha: 0.25),
+                      AppColors.primary.withValues(alpha: 0.35),
                       Colors.transparent,
                     ],
-                    radius: 0.7,
+                    radius: 0.75,
                   ),
                 ),
               ),
@@ -92,32 +92,32 @@ class _LoginScreenState extends State<LoginScreen> {
               bottom: -150,
               right: -100,
               child: Container(
-                width: 600,
-                height: 600,
+                width: 650,
+                height: 650,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   gradient: RadialGradient(
                     colors: [
-                      AppColors.secondary.withValues(alpha: 0.20),
+                      AppColors.secondary.withValues(alpha: 0.30),
                       Colors.transparent,
                     ],
-                    radius: 0.7,
+                    radius: 0.75,
                   ),
                 ),
               ),
             ),
 
-            // Responsive Layout
+            // Main Responsive Layout
             if (isDesktop)
               Row(
                 children: [
-                  // Left Side: Immersive Tech & Branding Panel
+                  // Left Side: Immersive Tech & Branding Showcase
                   Expanded(
                     flex: 6,
                     child: _buildBrandingPanel(context, isArabic),
                   ),
 
-                  // Right Side: Frosted Glass Login Portal Panel
+                  // Right Side: High-Contrast Glass Login Portal
                   Expanded(
                     flex: 5,
                     child: _buildLoginPanel(context, users, selectedUser, isArabic, isDark, false),
@@ -125,15 +125,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 ],
               )
             else
-              // Mobile / Tablet Single Column View
+              // Mobile / Tablet View
               SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 30),
                   child: Column(
                     children: [
                       const SizedBox(height: 20),
-                      CompanyLogo(
-                        size: 72,
+                      const CompanyLogo(
+                        size: 76,
                         showText: true,
                       ),
                       const SizedBox(height: 30),
@@ -143,12 +143,22 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
 
-            // Top Language Switcher Floating Badge
+            // Top Floating Language Switcher Badge
             Positioned(
               top: 24,
               right: isArabic ? null : 24,
               left: isArabic ? 24 : null,
-              child: const LanguageSwitchButton(),
+              child: Container(
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.primary.withValues(alpha: 0.3),
+                      blurRadius: 12,
+                    ),
+                  ],
+                ),
+                child: const LanguageSwitchButton(),
+              ),
             ),
           ],
         ),
@@ -166,13 +176,13 @@ class _LoginScreenState extends State<LoginScreen> {
           end: Alignment.bottomRight,
           colors: [
             const Color(0xFF060911),
-            AppColors.darkSurface.withValues(alpha: 0.85),
+            AppColors.darkSurface.withValues(alpha: 0.92),
           ],
         ),
         border: Border(
           right: BorderSide(
-            color: AppColors.primary.withValues(alpha: 0.25),
-            width: 1.2,
+            color: AppColors.primary.withValues(alpha: 0.35),
+            width: 1.5,
           ),
         ),
       ),
@@ -190,7 +200,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               StatusBadge(
                 text: isArabic ? 'نظام مالي موحد v1.0' : 'ENTERPRISE ERP v1.0',
-                color: AppColors.primaryLight,
+                color: AppColors.secondaryLight,
                 icon: Icons.verified_user_rounded,
               ),
             ],
@@ -200,16 +210,23 @@ class _LoginScreenState extends State<LoginScreen> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                isArabic
-                    ? 'إدارة الموارد المالية والمشاريع المتقدمة'
-                    : 'AUTOMATED TREASURY &\nENGINEERING ERP',
-                style: const TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.w900,
-                  height: 1.2,
-                  letterSpacing: -0.5,
-                  color: Colors.white,
+              ShaderMask(
+                shaderCallback: (bounds) => const LinearGradient(
+                  colors: [Colors.white, Color(0xFFCBD5E1)],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ).createShader(bounds),
+                child: Text(
+                  isArabic
+                      ? 'إدارة الموارد المالية والمشاريع المتقدمة'
+                      : 'AUTOMATED TREASURY &\nENGINEERING ERP',
+                  style: const TextStyle(
+                    fontSize: 32,
+                    fontWeight: FontWeight.w900,
+                    height: 1.2,
+                    letterSpacing: -0.5,
+                    color: Colors.white,
+                  ),
                 ),
               ),
               const SizedBox(height: 16),
@@ -217,15 +234,16 @@ class _LoginScreenState extends State<LoginScreen> {
                 isArabic
                     ? 'منصة متكاملة لإدارة الخزائن متعددة العملات (جنيه • يورو • دولار)، تتبع عقود المشاريع والهندسة، وإدارة العُهد والرواتب ودورة المستندات.'
                     : 'Next-generation financial operating system with real-time multi-currency vaults (EGP • EUR • USD), project cost tracking, cash advances, and automated analytics.',
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 14,
                   height: 1.6,
-                  color: AppColors.darkTextSecondary,
+                  color: Color(0xFFCBD5E1),
+                  fontWeight: FontWeight.w500,
                 ),
               ),
               const SizedBox(height: 36),
 
-              // Live Telemetry Cards Grid
+              // High-Contrast Glass Telemetry Cards Grid
               Row(
                 children: [
                   Expanded(
@@ -233,7 +251,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       icon: Icons.currency_exchange_rounded,
                       title: isArabic ? 'محرك العملات' : 'Multi-Currency',
                       value: 'EGP • EUR • USD',
-                      accent: AppColors.secondary,
+                      gradient: AppColors.cyanGradient,
                     ),
                   ),
                   const SizedBox(width: 16),
@@ -242,7 +260,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       icon: Icons.shield_rounded,
                       title: isArabic ? 'أمان التشفير' : 'TLS Security',
                       value: isArabic ? 'مشفر 256-bit' : '256-bit SSL',
-                      accent: AppColors.neonEmerald,
+                      gradient: AppColors.emeraldGradient,
                     ),
                   ),
                 ],
@@ -254,28 +272,27 @@ class _LoginScreenState extends State<LoginScreen> {
           Row(
             children: [
               Container(
-                width: 8,
-                height: 8,
+                width: 10,
+                height: 10,
                 decoration: const BoxDecoration(
                   color: AppColors.neonEmerald,
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
                       color: AppColors.neonEmerald,
-                      blurRadius: 6,
+                      blurRadius: 8,
                     ),
                   ],
                 ),
               ),
               const SizedBox(width: 10),
-              Text(
-                isArabic
-                    ? 'متصل بالسحابة • الخزائن مؤمنة • IMH SYSTEMS ENGINE'
-                    : 'Cloud Connected • Vault Encryption Active • IMH SYSTEMS',
+              const Text(
+                'CloudConnect Volt Inspiration Active • Multi-Currency Vaults • IMH SYSTEMS',
                 style: TextStyle(
                   fontSize: 11,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.darkTextSecondary,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white70,
+                  letterSpacing: 0.5,
                 ),
               ),
             ],
@@ -289,20 +306,22 @@ class _LoginScreenState extends State<LoginScreen> {
     required IconData icon,
     required String title,
     required String value,
-    required Color accent,
+    required LinearGradient gradient,
   }) {
     return GlassContainer(
       padding: const EdgeInsets.all(16),
-      borderRadius: BorderRadius.circular(14),
-      glowColor: accent,
-      borderColor: accent.withValues(alpha: 0.35),
+      borderRadius: BorderRadius.circular(16),
+      glowColor: gradient.colors.first,
+      borderColor: gradient.colors.first.withValues(alpha: 0.5),
+      elevation: 4,
       child: Row(
         children: [
           GlassIconBadge(
             icon: icon,
-            color: accent,
-            size: 38,
-            iconSize: 18,
+            gradient: gradient,
+            size: 42,
+            iconSize: 20,
+            glowColor: gradient.colors.first,
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -313,17 +332,17 @@ class _LoginScreenState extends State<LoginScreen> {
                   title.toUpperCase(),
                   style: TextStyle(
                     fontSize: 10,
-                    fontWeight: FontWeight.w800,
-                    color: accent,
-                    letterSpacing: 0.8,
+                    fontWeight: FontWeight.w900,
+                    color: gradient.colors.first,
+                    letterSpacing: 1.0,
                   ),
                 ),
                 const SizedBox(height: 2),
                 Text(
                   value,
                   style: const TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w700,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w800,
                     color: Colors.white,
                   ),
                   overflow: TextOverflow.ellipsis,
@@ -336,7 +355,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  /// Right Side Frosted Glass Login Panel
+  /// Right Side High-Contrast Glass Login Panel
   Widget _buildLoginPanel(
     BuildContext context,
     List<UserModel> users,
@@ -347,10 +366,10 @@ class _LoginScreenState extends State<LoginScreen> {
   ) {
     return Center(
       child: GlassContainer(
-        blur: 16,
-        elevation: 8,
-        glowColor: AppColors.primary,
-        borderColor: AppColors.primary.withValues(alpha: 0.35),
+        blur: 20,
+        elevation: 10,
+        glowColor: AppColors.primaryLight,
+        borderColor: AppColors.primaryLight.withValues(alpha: 0.45),
         margin: EdgeInsets.all(isMobile ? 0 : 36),
         padding: EdgeInsets.all(isMobile ? 22 : 36),
         borderRadius: BorderRadius.circular(24),
@@ -360,7 +379,7 @@ class _LoginScreenState extends State<LoginScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Portal Header Row
+              // Portal Header Row with 3D Glass Icon
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -369,8 +388,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       const GlassIconBadge(
                         icon: Icons.lock_person_rounded,
                         gradient: AppColors.primaryGradient,
-                        size: 42,
-                        iconSize: 20,
+                        size: 46,
+                        iconSize: 22,
+                        glowColor: AppColors.primaryLight,
                       ),
                       const SizedBox(width: 14),
                       Column(
@@ -379,17 +399,19 @@ class _LoginScreenState extends State<LoginScreen> {
                           Text(
                             isArabic ? 'بوابة الدخول المحمية' : 'SECURE SYSTEM PORTAL',
                             style: const TextStyle(
-                              fontSize: 14,
+                              fontSize: 15,
                               fontWeight: FontWeight.w900,
-                              letterSpacing: 1.0,
+                              letterSpacing: 1.1,
                               color: Colors.white,
                             ),
                           ),
-                          Text(
-                            isArabic ? 'ادخل بيانات الحساب للمتابعة' : 'Enter user credentials to sign in',
+                          const SizedBox(height: 2),
+                          const Text(
+                            'CloudConnect Volt Inspiration Active • SSL 256-Bit',
                             style: TextStyle(
                               fontSize: 11,
-                              color: AppColors.darkTextSecondary,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.primaryLight,
                             ),
                           ),
                         ],
@@ -400,59 +422,80 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
 
               const SizedBox(height: 24),
-              Divider(height: 1, color: AppColors.primary.withValues(alpha: 0.2)),
+              Divider(height: 1, color: AppColors.primaryLight.withValues(alpha: 0.3)),
               const SizedBox(height: 24),
 
-              // User Persona Selector Label & Container
-              Text(
-                isArabic ? 'حساب المستخدم' : 'ACCOUNT PERSONA',
-                style: TextStyle(
-                  fontSize: 10,
-                  fontWeight: FontWeight.w900,
-                  letterSpacing: 1.2,
-                  color: AppColors.primaryLight,
-                ),
+              // User Persona Selector Label
+              Row(
+                children: [
+                  const Icon(Icons.person_pin_rounded, size: 14, color: AppColors.secondaryLight),
+                  const SizedBox(width: 6),
+                  Text(
+                    isArabic ? 'حساب المستخدم' : 'SELECT ACCOUNT PERSONA',
+                    style: const TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w900,
+                      letterSpacing: 1.2,
+                      color: AppColors.secondaryLight,
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 8),
+
+              // Dropdown Persona Selector Container with High-Contrast Glass Pod
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
                 decoration: BoxDecoration(
-                  color: AppColors.darkBackground.withValues(alpha: 0.6),
+                  color: const Color(0xFF0F172A),
                   borderRadius: BorderRadius.circular(14),
                   border: Border.all(
-                    color: AppColors.primary.withValues(alpha: 0.3),
-                    width: 1.2,
+                    color: AppColors.secondaryLight.withValues(alpha: 0.5),
+                    width: 1.4,
                   ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.secondary.withValues(alpha: 0.25),
+                      blurRadius: 10,
+                    ),
+                  ],
                 ),
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<String>(
                     value: _selectedUserId,
-                    dropdownColor: AppColors.darkSurface,
+                    dropdownColor: const Color(0xFF1E293B),
                     isExpanded: true,
                     style: const TextStyle(
-                      fontSize: 13,
+                      fontSize: 14,
                       color: Colors.white,
-                      fontWeight: FontWeight.w700,
+                      fontWeight: FontWeight.w800,
                     ),
-                    icon: const Icon(
-                      Icons.keyboard_arrow_down_rounded,
-                      color: AppColors.primaryLight,
+                    icon: const GlassIconBadge(
+                      icon: Icons.keyboard_arrow_down_rounded,
+                      gradient: AppColors.cyanGradient,
+                      size: 28,
+                      iconSize: 16,
                     ),
                     items: users.map((u) {
                       return DropdownMenuItem<String>(
                         value: u.id,
                         child: Row(
                           children: [
-                            GlassIconBadge(
-                              icon: Icons.person_rounded,
+                            const GlassIconBadge(
+                              icon: Icons.account_circle_rounded,
                               gradient: AppColors.primaryGradient,
-                              size: 28,
-                              iconSize: 14,
+                              size: 30,
+                              iconSize: 16,
                             ),
                             const SizedBox(width: 10),
                             Expanded(
                               child: Text(
                                 '${u.name} (${u.entityCode})',
+                                style: const TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w800,
+                                  color: Colors.white,
+                                ),
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -474,57 +517,77 @@ class _LoginScreenState extends State<LoginScreen> {
 
               const SizedBox(height: 20),
 
-              // Password Input Field Box
-              Text(
-                isArabic ? 'كلمة المرور' : 'PASSWORD',
-                style: TextStyle(
-                  fontSize: 10,
-                  fontWeight: FontWeight.w900,
-                  letterSpacing: 1.2,
-                  color: AppColors.primaryLight,
-                ),
+              // Password Input Label
+              Row(
+                children: [
+                  const Icon(Icons.key_rounded, size: 14, color: AppColors.primaryLight),
+                  const SizedBox(width: 6),
+                  Text(
+                    isArabic ? 'كلمة المرور' : 'ENTER PASSWORD',
+                    style: const TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w900,
+                      letterSpacing: 1.2,
+                      color: AppColors.primaryLight,
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 8),
+
+              // Password Text Field with High Contrast Glass Icons
               TextFormField(
                 controller: _passwordController,
                 obscureText: _obscurePassword,
                 style: const TextStyle(
                   color: Colors.white,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  letterSpacing: 1.2,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: 1.5,
                 ),
                 decoration: InputDecoration(
                   hintText: isArabic ? 'ادخل كلمة المرور' : 'Enter account password',
-                  hintStyle: TextStyle(color: AppColors.darkTextSecondary, fontSize: 13),
-                  prefixIcon: const Icon(Icons.key_rounded, size: 18, color: AppColors.primaryLight),
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      _obscurePassword ? Icons.visibility_outlined : Icons.visibility_off_outlined,
-                      size: 18,
-                      color: AppColors.darkTextSecondary,
+                  hintStyle: const TextStyle(color: Color(0xFF94A3B8), fontSize: 13),
+                  prefixIcon: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: GlassIconBadge(
+                      icon: Icons.shield_moon_rounded,
+                      gradient: AppColors.purpleGradient,
+                      size: 32,
+                      iconSize: 16,
                     ),
-                    onPressed: () {
-                      setState(() {
-                        _obscurePassword = !_obscurePassword;
-                      });
-                    },
+                  ),
+                  suffixIcon: Padding(
+                    padding: const EdgeInsets.only(right: 6),
+                    child: IconButton(
+                      icon: GlassIconBadge(
+                        icon: _obscurePassword ? Icons.visibility_rounded : Icons.visibility_off_rounded,
+                        gradient: _obscurePassword ? AppColors.primaryGradient : AppColors.amberGradient,
+                        size: 30,
+                        iconSize: 16,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _obscurePassword = !_obscurePassword;
+                        });
+                      },
+                    ),
                   ),
                   filled: true,
-                  fillColor: AppColors.darkBackground.withValues(alpha: 0.6),
+                  fillColor: const Color(0xFF0F172A),
                   contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(14),
                     borderSide: BorderSide(
-                      color: AppColors.primary.withValues(alpha: 0.3),
-                      width: 1.2,
+                      color: AppColors.primaryLight.withValues(alpha: 0.4),
+                      width: 1.4,
                     ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(14),
                     borderSide: const BorderSide(
                       color: AppColors.primaryLight,
-                      width: 1.8,
+                      width: 2.0,
                     ),
                   ),
                 ),
@@ -539,23 +602,28 @@ class _LoginScreenState extends State<LoginScreen> {
               if (_errorMessage != null) ...[
                 const SizedBox(height: 14),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
                   decoration: BoxDecoration(
-                    color: AppColors.error.withValues(alpha: 0.15),
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: AppColors.error.withValues(alpha: 0.4)),
+                    color: AppColors.error.withValues(alpha: 0.2),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: AppColors.error, width: 1.5),
                   ),
                   child: Row(
                     children: [
-                      const Icon(Icons.error_outline_rounded, size: 16, color: AppColors.error),
-                      const SizedBox(width: 8),
+                      const GlassIconBadge(
+                        icon: Icons.warning_amber_rounded,
+                        gradient: AppColors.roseGradient,
+                        size: 28,
+                        iconSize: 14,
+                      ),
+                      const SizedBox(width: 10),
                       Expanded(
                         child: Text(
                           _errorMessage!,
                           style: const TextStyle(
-                            color: AppColors.error,
+                            color: Colors.white,
                             fontSize: 12,
-                            fontWeight: FontWeight.w700,
+                            fontWeight: FontWeight.w800,
                           ),
                         ),
                       ),
@@ -566,24 +634,29 @@ class _LoginScreenState extends State<LoginScreen> {
 
               const SizedBox(height: 28),
 
-              // Glowing Gradient Sign In Button
+              // Glowing High-Contrast Gradient Sign In Button
               Container(
                 width: double.infinity,
-                height: 50,
+                height: 52,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(14),
                   gradient: AppColors.primaryGradient,
                   boxShadow: [
                     BoxShadow(
-                      color: AppColors.primary.withValues(alpha: 0.45),
-                      blurRadius: 16,
+                      color: AppColors.primary.withValues(alpha: 0.6),
+                      blurRadius: 18,
                       offset: const Offset(0, 4),
                     ),
                   ],
                 ),
                 child: ElevatedButton.icon(
                   onPressed: () => _handleLogin(context, selectedUser),
-                  icon: const Icon(Icons.arrow_forward_rounded, size: 20, color: Colors.white),
+                  icon: const GlassIconBadge(
+                    icon: Icons.arrow_forward_rounded,
+                    gradient: AppColors.cyanGradient,
+                    size: 32,
+                    iconSize: 16,
+                  ),
                   label: Text(
                     isArabic ? 'تسجيل الدخول إلى النظام' : 'SIGN IN TO ENTERPRISE ERP',
                     style: const TextStyle(
@@ -603,30 +676,49 @@ class _LoginScreenState extends State<LoginScreen> {
 
               const SizedBox(height: 28),
 
-              // Footer: Powered by pom agency & Copyright
+              // High-Contrast PowerPay BOM & Pom Agency Glass Footer Badge
               Center(
-                child: Column(
-                  children: [
-                    Text(
-                      'powered by pom agency'.toUpperCase(),
-                      style: TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 1.8,
-                        color: AppColors.darkTextSecondary.withValues(alpha: 0.8),
+                child: GlassContainer(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                  borderRadius: BorderRadius.circular(16),
+                  glowColor: AppColors.amberGradient.colors.first,
+                  borderColor: AppColors.amberGradient.colors.first.withValues(alpha: 0.5),
+                  elevation: 4,
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const GlassIconBadge(
+                            icon: Icons.cloud_done_rounded,
+                            gradient: AppColors.cyanGradient,
+                            size: 26,
+                            iconSize: 14,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            'POWERED BY POM AGENCY • CloudConnect Volt Inspiration Active',
+                            style: const TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w900,
+                              letterSpacing: 1.4,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      '© 2026 pom-agency Systems. All rights reserved.',
-                      style: TextStyle(
-                        fontSize: 9,
-                        fontWeight: FontWeight.w500,
-                        letterSpacing: 0.5,
-                        color: AppColors.darkTextSecondary.withValues(alpha: 0.55),
+                      const SizedBox(height: 4),
+                      const Text(
+                        '© 2026 pom-agency Systems. All rights reserved.',
+                        style: TextStyle(
+                          fontSize: 9,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 0.5,
+                          color: Color(0xFFCBD5E1),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ],
